@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb:11.1
+    container_name: bweng-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bweng_ws23
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pw
+    ports:
+      - "3306:3306"
