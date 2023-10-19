@@ -1,13 +1,17 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
     username: user
     password: pw
     url: jdbc:mysql://localhost:3306/bweng_ws23
-
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+security:
+  cors:
+    allowed-origins: localhost:8080
+    allowed-methods: GET, POST, PUT, OPTIONS, HEAD
+server:
+  port: 8081
