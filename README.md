@@ -1,8 +1,9 @@
 # Setup
+
 1. open terminal and change directory into docker folder
 2. run the command ```docker compose up -d```
-3. start the project via the run button
-
+3. run the maven command package
+4. start the project via the run button
 
 ## Milestone 1 conzept
 
@@ -14,6 +15,7 @@ if not conficts the show is created.
 </p>
 
 ### Minimal Database Model
+
 <img src="documentation/db_model.png" />
 
 <p>
