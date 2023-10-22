@@ -21,5 +21,6 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-
+    @OneToMany(mappedBy = "room")
+    private List<Show> shows;
 }
