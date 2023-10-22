@@ -26,7 +26,6 @@ public class ShowController {
 
     @PostMapping("/shows")
     public Show postShow(@RequestBody Show show){
-        System.out.print(show);
         return this.showService.addShow(show);
     }
 

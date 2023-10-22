@@ -15,6 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name="shows")
 public class Show {
     @Id
     @Setter(AccessLevel.NONE)

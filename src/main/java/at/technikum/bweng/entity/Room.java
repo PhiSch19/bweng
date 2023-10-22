@@ -6,9 +6,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,6 +18,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    @OneToMany(mappedBy = "room")
-    private List<Show> shows;
+    private int capacity;
+    private int cleaningMinutes;
+
 }

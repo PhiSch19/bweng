@@ -14,12 +14,10 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 public class Movie {
-
     @Id
     @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    @OneToMany(mappedBy = "movie")
-    private List<Show> shows;
+    private int durationMinutes;
 }
