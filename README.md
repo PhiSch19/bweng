@@ -17,7 +17,3 @@ if not conficts the show is created.
 ### Minimal Database Model
 
 <img src="documentation/db_model.png" />
-
-<p>
-TODO's: How to set up Java ORM and Spring in general so it works with those relations and DateTime Objects @Phillip ???
-</p>
