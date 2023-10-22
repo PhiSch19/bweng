@@ -1,35 +1,34 @@
 package at.technikum.bweng.controller;
 
 
-import at.technikum.bweng.entity.Room;
+import at.technikum.bweng.dto.RoomDto;
+import at.technikum.bweng.dto.mapper.RoomDtoMapper;
 import at.technikum.bweng.service.RoomService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 public class RoomController {
 
-  private final RoomService roomService;
+    private final RoomService roomService;
+    private final RoomDtoMapper dtoMapper;
 
-  public RoomController(RoomService roomService){
-      this.roomService = roomService;
-  }
+    @GetMapping("/rooms")
+    public List<RoomDto> getRooms() {
+        return this.roomService.findAllRooms().stream().map(dtoMapper::from).toList();
+    }
 
-  @GetMapping("/rooms")
-  public List<Room> getRooms(){
-      return this.roomService.findAllRooms();
-  }
+    @GetMapping("rooms/{id}")
+    public RoomDto getRoom(@PathVariable UUID id) {
+        return dtoMapper.from(roomService.getRoom(id));
+    }
 
-  @GetMapping("rooms/{id}")
-  public Room getRoom(@PathVariable UUID id){
-      return roomService.getRoom(id);
-  }
-
-  @PostMapping("/rooms")
-  public Room postRoom(@RequestBody  Room room){
-      return roomService.addRoom(room);
-
-  }
+    @PostMapping("/rooms")
+    public RoomDto postRoom(@RequestBody RoomDto room) {
+        return dtoMapper.from(roomService.addRoom(dtoMapper.from(room)));
+    }
 }

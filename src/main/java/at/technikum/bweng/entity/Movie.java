@@ -1,7 +1,6 @@
 package at.technikum.bweng.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,10 +15,11 @@ import java.util.UUID;
 public class Movie {
 
     @Id
-    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     private String name;
+
     @OneToMany(mappedBy = "movie")
     private List<Show> shows;
 }

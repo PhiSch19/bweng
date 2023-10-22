@@ -1,0 +1,6 @@
+POST http://localhost:8081/movies
+Content-Type: application/json
+
+{
+  "name": "Shrek"
+}
