@@ -51,4 +51,10 @@ public class RoomService {
 
         return roomRepository.save(updatedRoom);
     }
+
+    public void deleteRoom(UUID id) {
+        getRoom(id);
+
+        roomRepository.deleteById(id);
+    }
 }

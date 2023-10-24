@@ -6,6 +6,7 @@ import at.technikum.bweng.dto.mapper.RoomDtoMapper;
 import at.technikum.bweng.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,5 +61,10 @@ public class RoomController {
         }
 
         return dtoMapper.from(roomService.updateRoom(id, dtoMapper.from(room)));
+    }
+
+    @DeleteMapping("/rooms/{id}")
+    public void deleteRoom(@PathVariable UUID id) {
+        roomService.deleteRoom(id);
     }
 }
