@@ -3,7 +3,6 @@ package at.technikum.bweng.controller;
 import at.technikum.bweng.dto.MovieDto;
 import at.technikum.bweng.dto.mapper.MovieDtoMapper;
 import at.technikum.bweng.entity.Movie;
-import at.technikum.bweng.entity.Show;
 import at.technikum.bweng.service.MovieService;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,10 +43,10 @@ public class MovieControllerTests {
         var movie = new Movie();
         movie.setId(UUID.randomUUID());
         movie.setDurationMinutes(120);
-        movie.setShows(new ArrayList<Show>());
+        movie.setShows(new ArrayList<>());
         movie.setName("Test Movie");
 
-        Mockito.when(movieService.getAll()).thenReturn(new ArrayList<Movie>());
+        Mockito.when(movieService.getAll()).thenReturn(new ArrayList<>());
         Mockito.when(movieDtoMapper.from((MovieDto) Mockito.any())).thenReturn(new Movie());
 
         // Act and Assert
