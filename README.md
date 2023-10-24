@@ -2,17 +2,20 @@
 
 1. open terminal and change directory into docker folder
 2. run the command ```docker compose up -d```
-3. run the maven command package
+3. run  ```mvn package``` (in IntelliJ, look under Maven/bweng/Lifecyle)
 4. start the project via the run button
 
-## Milestone 1 conzept
+## Milestone 1 concept
 
 3 Entities Room, Movie and Show.
-<p>
-Every show has a date a time, a movie_id and a room_id.
-When the ShowController wants to create a new Show, the ShowService should check for conflicts.
-if not conficts the show is created.
-</p>
+
+The room has the attributes name, capacity and cleaning time.
+The movie has the attributes name and duration.
+The show has the attributes startTime (date+time), movie and room.
+
+Every duration should be in minutes.
+
+When the Show is created or updated, there should be a check for conflicting shows in the same room.
 
 ### Minimal Database Model
 
