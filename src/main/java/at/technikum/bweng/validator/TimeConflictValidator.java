@@ -25,11 +25,13 @@ public class TimeConflictValidator implements ConstraintValidator<TimeConflictCo
         LocalDateTime plannedStartTime = show.startTime();
         LocalDateTime plannedEndTime = plannedStartTime.plusMinutes(movie.getDurationMinutes());
 
-        // TODO: 24.10.23 in a future Milestone enhance performance (maybe write it in an sql query in the showRepo)
-        return room.getShows().stream().noneMatch(s ->
-                (s.getStartTime().isBefore(plannedStartTime) && calcNextPossibleStart(s).isAfter(plannedStartTime))
-                        || (s.getStartTime().isAfter(plannedStartTime) && plannedEndTime.isBefore(s.getStartTime()))
-        );
+        // TODO: 24.10.23 in a future Milestone maybe enhance performance (e.g. write it in an sql query in the showRepo)
+        return room.getShows().stream()
+                .filter(s -> show.id() == null || show.id() != s.getId())
+                .noneMatch(s ->
+                        (s.getStartTime().isBefore(plannedStartTime) && calcNextPossibleStart(s).isAfter(plannedStartTime))
+                                || (s.getStartTime().isAfter(plannedStartTime) && plannedEndTime.isBefore(s.getStartTime()))
+                );
 
     }
 
