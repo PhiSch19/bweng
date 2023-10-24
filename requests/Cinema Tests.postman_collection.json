@@ -1,0 +1,1020 @@
+{
+	"info": {
+		"_postman_id": "5fa7e3e7-95a4-4c29-8e8a-5f191228eb8c",
+		"name": "Cinema Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21647299"
+	},
+	"item": [
+		{
+			"name": "Movies",
+			"item": [
+				{
+					"name": "Get movies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get movies - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/movies",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create movie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Create movie - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"    \r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.globals.set(\"test_id\", responseBody.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Postman Test Movie\",\r\n  \"durationMinutes\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/movies",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get movie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get movie - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movies",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update movie",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Update movie - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"name\": \"Postman Test Movie 2\",\r\n  \"durationMinutes\": 150\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movies",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get updated movie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get updated movie - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movies",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch movie",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Patch movie - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"durationMinutes\": 150\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movies",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get patched movie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get patched movie - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movies",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get patched movie Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get patched movie - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movies",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete movie",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);\r",
+									"pm.globals.clear(); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Delete movie - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movies",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rooms",
+			"item": [
+				{
+					"name": "Get rooms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get rooms - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/rooms",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Create room - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"    \r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.globals.set(\"test_id\", responseBody.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Test Room\",\r\n  \"capacity\": 300,\r\n  \"cleaningMinutes\": 30\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/rooms",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get room - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"rooms",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update room",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Update room - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"name\": \"Test Room 2\",\r\n  \"capacity\": 150,\r\n  \"cleaningMinutes\": 30\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"rooms",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get updated room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get updated room - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"rooms",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch room",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Patch room - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"capacity\": 400,\r\n  \"cleaningMinutes\": 30\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"rooms",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get patched room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get patched room - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"rooms",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete room",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);\r",
+									"pm.globals.clear(); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Delete room - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"rooms",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shows",
+			"item": [
+				{
+					"name": "Get shows",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get shows - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/shows",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"shows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create show",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Create shows - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"    \r",
+									"    const responseBody = pm.response.json();\r",
+									"\r",
+									"    pm.globals.set(\"test_id\", responseBody.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startTime\": \"2023-10-24T17:00:00\",\r\n  \"movieId\": \"00ec0d7e-2587-4345-95fe-f1766cb9886d\",\r\n  \"roomId\": \"ec74e603-c485-450f-aaca-2898a7d58072\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/shows",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"shows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get show",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get show - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/shows/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"shows",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update show",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Update show - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"startTime\": \"2023-11-24T17:00:00\",\r\n  \"movieId\": \"00ec0d7e-2587-4345-95fe-f1766cb9886d\",\r\n  \"roomId\": \"ec74e603-c485-450f-aaca-2898a7d58072\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/shows/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"shows",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get updated show",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Get updated show - Status code is 200\", () => {\r",
+									"   pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/shows/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"shows",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete show",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);\r",
+									"pm.globals.clear(); "
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"MasterData: Delete show - Status code is 200\", () => {\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_base_api}}/shows/{{test_id}}",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"shows",
+								"{{test_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "test_id",
+			"value": ""
+		},
+		{
+			"key": "url_base_api",
+			"value": "localhost:8081",
+			"type": "string"
+		}
+	]
+}

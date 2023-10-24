@@ -43,17 +43,20 @@ public class ShowController {
     }
 
     @PutMapping("/shows/{id}")
-    public ShowDto putMovie(@PathVariable UUID id, @RequestBody @Validated ShowDto movie) {
-        if (id != movie.id()) {
+    public ShowDto putMovie(@PathVariable UUID id, @RequestBody @Validated ShowDto show) {
+        var showId = (UUID) show.id();
+
+        if (!id.equals(showId)) {
             throw new IllegalArgumentException("Put not allowed! IDs do not match.");
         }
 
-        return dtoMapper.from(this.showService.updateShow(id, dtoMapper.from(movie)));
+        showService.updateShow(id, dtoMapper.from(show));
+
+        return dtoMapper.from(showService.getShow(id));
     }
 
     @DeleteMapping("/shows/{id}")
     public void deleteShow(@PathVariable UUID id) {
         this.showService.deleteShow(id);
     }
-
 }

@@ -1,8 +1,0 @@
-POST http://localhost:8081/rooms
-Content-Type: application/json
-
-{
-  "name": "room3",
-  "capacity": 500,
-  "cleaningMinutes": 60
-}

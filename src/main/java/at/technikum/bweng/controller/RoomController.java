@@ -46,21 +46,28 @@ public class RoomController {
 
     @PatchMapping("/rooms/{id}")
     public RoomDto patchRoom(@PathVariable UUID id, @RequestBody RoomDto room) {
-        // Check if the room exists, and if not, return an error or handle it as needed.
-        if (id != room.id()) {
-            throw new IllegalArgumentException("Patch not allowed! IDs do not match.");
+        var roomId = (UUID) room.id();
+
+        if (!id.equals(roomId)) {
+            throw new IllegalArgumentException("Put not allowed! IDs do not match.");
         }
 
-        return dtoMapper.from(roomService.patchRoom(id, dtoMapper.from(room)));
+        roomService.patchRoom(id, dtoMapper.from(room));
+
+        return dtoMapper.from(roomService.getRoom(id));
     }
 
     @PutMapping("/rooms/{id}")
     public RoomDto putRoom(@PathVariable UUID id, @RequestBody @Validated RoomDto room) {
-        if (id != room.id()) {
+        var roomId = (UUID) room.id();
+
+        if (!id.equals(roomId)) {
             throw new IllegalArgumentException("Put not allowed! IDs do not match.");
         }
 
-        return dtoMapper.from(roomService.updateRoom(id, dtoMapper.from(room)));
+        roomService.updateRoom(id, dtoMapper.from(room));
+
+        return dtoMapper.from(roomService.getRoom(id));
     }
 
     @DeleteMapping("/rooms/{id}")

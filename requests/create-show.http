@@ -1,8 +1,0 @@
-POST http://localhost:8081/shows
-Content-Type: application/json
-
-{
-  "startTime": "2023-11-27T15:00:00",
-  "movieId": "160a6622-4f2f-4769-b2ca-35f344201c7a",
-  "roomId": "470a853c-067d-4177-aaef-b7aad4d7b04e"
-}
