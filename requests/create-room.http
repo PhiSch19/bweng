@@ -1,6 +1,8 @@
-POST http://localhost:8081/movies
+POST http://localhost:8081/rooms
 Content-Type: application/json
 
 {
-  "name": "Shrek"
+  "name": "room3",
+  "capacity": 500,
+  "cleaningMinutes": 60
 }

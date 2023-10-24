@@ -5,13 +5,19 @@ import at.technikum.bweng.dto.RoomDto;
 import at.technikum.bweng.dto.mapper.RoomDtoMapper;
 import at.technikum.bweng.service.RoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class RoomController {
 
     private final RoomService roomService;
@@ -28,7 +34,10 @@ public class RoomController {
     }
 
     @PostMapping("/rooms")
-    public RoomDto postRoom(@RequestBody RoomDto room) {
+    public RoomDto postRoom(@RequestBody @Validated RoomDto room) {
+        if (room.id() != null) {
+            throw new IllegalArgumentException("Update not allowed!");
+        }
         return dtoMapper.from(roomService.addRoom(dtoMapper.from(room)));
     }
 }

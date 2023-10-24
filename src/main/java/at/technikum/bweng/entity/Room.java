@@ -1,7 +1,11 @@
 package at.technikum.bweng.entity;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +22,10 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
+
+    private Integer capacity;
+    private Integer cleaningMinutes;
+
     @OneToMany(mappedBy = "room")
     private List<Show> shows;
 }
