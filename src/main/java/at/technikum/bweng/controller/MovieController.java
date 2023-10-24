@@ -47,11 +47,6 @@ public class MovieController {
 
     @PatchMapping("/movies/{id}")
     public MovieDto patchMovie(@PathVariable UUID id, @RequestBody MovieDto movie) {
-        var movieId = (UUID) movie.id();
-
-        if (!id.equals(movieId)) {
-            throw new IllegalArgumentException("Put not allowed! IDs do not match.");
-        }
 
         movieService.patchMovie(id, movieDtoMapper.from(movie));
 
@@ -60,7 +55,7 @@ public class MovieController {
 
     @PutMapping("/movies/{id}")
     public MovieDto putMovie(@PathVariable UUID id, @RequestBody @Validated MovieDto movie) {
-        var movieId = (UUID) movie.id();
+        UUID movieId = movie.id();
 
         if (!id.equals(movieId)) {
             throw new IllegalArgumentException("Put not allowed! IDs do not match.");

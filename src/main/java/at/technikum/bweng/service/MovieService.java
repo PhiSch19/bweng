@@ -11,9 +11,6 @@ import java.util.UUID;
 public class MovieService {
     private final MovieRepository movieRepository;
 
-    public Movie getMovie(UUID id) {
-        return movieRepository.findById(id).orElseThrow();
-    }
 
     public MovieService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
@@ -32,13 +29,10 @@ public class MovieService {
     }
 
     public Movie patchMovie(UUID id, Movie updatedMovie) {
-        Movie existingMovie = getMovie(id);
+        Movie existingMovie = findMovie(id);
 
         if (updatedMovie.getName() != null) {
             existingMovie.setName(updatedMovie.getName());
-        }
-        if (updatedMovie.getShows() != null) {
-            existingMovie.setShows(updatedMovie.getShows());
         }
         if (updatedMovie.getDurationMinutes() != null) {
             existingMovie.setDurationMinutes(updatedMovie.getDurationMinutes());
@@ -48,13 +42,13 @@ public class MovieService {
     }
 
     public Movie updateMovie(UUID id, Movie updatedRoom) {
-        getMovie(id);
+        findMovie(id);
 
         return movieRepository.save(updatedRoom);
     }
 
     public void deleteMovie(UUID id) {
-        getMovie(id);
+        findMovie(id);
 
         movieRepository.deleteById(id);
     }

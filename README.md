@@ -1,4 +1,8 @@
-# Setup
+# Cinema Management Tool
+
+By Kristijan Kusic, Patrick Leitner and Philipp Schermann
+
+## Setup
 
 1. open terminal and change directory into docker folder
 2. run the command ```docker compose up -d```
