@@ -6,7 +6,13 @@ import at.technikum.bweng.dto.mapper.RoomDtoMapper;
 import at.technikum.bweng.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,17 +46,17 @@ public class RoomController {
     @PatchMapping("/rooms/{id}")
     public RoomDto patchRoom(@PathVariable UUID id, @RequestBody RoomDto room) {
         // Check if the room exists, and if not, return an error or handle it as needed.
-        if (room.id() != null) {
-            throw new IllegalArgumentException("Patch not allowed!");
+        if (id != room.id()) {
+            throw new IllegalArgumentException("Patch not allowed! IDs do not match.");
         }
 
         return dtoMapper.from(roomService.patchRoom(id, dtoMapper.from(room)));
     }
 
     @PutMapping("/rooms/{id}")
-    public RoomDto putRoom(@PathVariable UUID id, @RequestBody RoomDto room) {
-        if (room.id() != null) {
-            throw new IllegalArgumentException("Put not allowed!");
+    public RoomDto putRoom(@PathVariable UUID id, @RequestBody @Validated RoomDto room) {
+        if (id != room.id()) {
+            throw new IllegalArgumentException("Put not allowed! IDs do not match.");
         }
 
         return dtoMapper.from(roomService.updateRoom(id, dtoMapper.from(room)));
