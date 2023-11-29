@@ -24,17 +24,17 @@ import java.util.UUID;
 public class MovieController {
 
     private final MovieService movieService;
-    private final MovieDtoMapper movieDtoMapper;
+    private final MovieDtoMapper dtoMapper;
 
     @GetMapping("/movies")
     public List<MovieDto> getMovies() {
-        return movieService.getAll().stream().map(movieDtoMapper::from).toList();
+        return movieService.getAll().stream().map(dtoMapper::from).toList();
     }
 
     @GetMapping("/movies/{id}")
     @ResponseBody
     public MovieDto getMovie(@PathVariable UUID id) {
-        return movieDtoMapper.from(movieService.findMovie(id));
+        return dtoMapper.from(movieService.findMovie(id));
     }
 
     @PostMapping("/movies")
@@ -42,28 +42,23 @@ public class MovieController {
         if (movie.id() != null) {
             throw new IllegalArgumentException("Update not allowed!");
         }
-        return movieDtoMapper.from(movieService.addMovie(movieDtoMapper.from(movie)));
+        return dtoMapper.from(movieService.addMovie(dtoMapper.from(movie)));
     }
 
     @PatchMapping("/movies/{id}")
     public MovieDto patchMovie(@PathVariable UUID id, @RequestBody MovieDto movie) {
-
-        movieService.patchMovie(id, movieDtoMapper.from(movie));
-
-        return movieDtoMapper.from(movieService.findMovie(id));
+        if (movie.id() != null) {
+            throw new IllegalArgumentException("ID update not allowed!");
+        }
+        return dtoMapper.from(movieService.patchMovie(id, dtoMapper.from(movie)));
     }
 
     @PutMapping("/movies/{id}")
     public MovieDto putMovie(@PathVariable UUID id, @RequestBody @Validated MovieDto movie) {
-        UUID movieId = movie.id();
-
-        if (!id.equals(movieId)) {
+        if (!id.equals(movie.id())) {
             throw new IllegalArgumentException("Put not allowed! IDs do not match.");
         }
-
-        movieService.updateMovie(id, movieDtoMapper.from(movie));
-
-        return movieDtoMapper.from(movieService.findMovie(id));
+        return dtoMapper.from(movieService.updateMovie(id, dtoMapper.from(movie)));
     }
 
     @DeleteMapping("/movies/{id}")

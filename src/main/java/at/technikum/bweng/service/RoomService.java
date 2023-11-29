@@ -3,20 +3,17 @@ package at.technikum.bweng.service;
 
 import at.technikum.bweng.entity.Room;
 import at.technikum.bweng.repository.RoomRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class RoomService {
 
     private final RoomRepository roomRepository;
-
-    public RoomService(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
-    }
-
 
     public List<Room> findAllRooms() {
         return roomRepository.findAll();
@@ -43,7 +40,7 @@ public class RoomService {
             existingRoom.setCleaningMinutes(updatedRoom.getCleaningMinutes());
         }
 
-        return roomRepository.save(existingRoom);
+        return updateRoom(id, updatedRoom);
     }
 
     public Room updateRoom(UUID id, Room updatedRoom) {

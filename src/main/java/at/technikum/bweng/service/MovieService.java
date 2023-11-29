@@ -2,19 +2,17 @@ package at.technikum.bweng.service;
 
 import at.technikum.bweng.entity.Movie;
 import at.technikum.bweng.repository.MovieRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class MovieService {
+
     private final MovieRepository movieRepository;
-
-
-    public MovieService(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
-    }
 
     public List<Movie> getAll() {
         return this.movieRepository.findAll();
@@ -38,7 +36,7 @@ public class MovieService {
             existingMovie.setDurationMinutes(updatedMovie.getDurationMinutes());
         }
 
-        return movieRepository.save(existingMovie);
+        return updateMovie(id, existingMovie);
     }
 
     public Movie updateMovie(UUID id, Movie updatedRoom) {

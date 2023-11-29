@@ -1,6 +1,5 @@
 package at.technikum.bweng.controller;
 
-import at.technikum.bweng.dto.mapper.MovieDtoMapper;
 import at.technikum.bweng.dto.mapper.MovieDtoMapperImpl;
 import at.technikum.bweng.entity.Movie;
 import at.technikum.bweng.repository.MovieRepository;
@@ -32,12 +31,10 @@ public class MovieControllerTests {
     @Mock
     private MovieRepository movieRepository;
 
-    private final MovieDtoMapper movieDtoMapper = new MovieDtoMapperImpl();
-
     @Before
     public void setUp() {
         MovieService movieService = new MovieService(movieRepository);
-        mockMvc = MockMvcBuilders.standaloneSetup(new MovieController(movieService, movieDtoMapper)).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(new MovieController(movieService, new MovieDtoMapperImpl())).build();
     }
 
     @Test

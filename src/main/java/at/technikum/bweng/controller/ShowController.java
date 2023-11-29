@@ -44,15 +44,10 @@ public class ShowController {
 
     @PutMapping("/shows/{id}")
     public ShowDto putMovie(@PathVariable UUID id, @RequestBody @Validated ShowDto show) {
-        var showId = (UUID) show.id();
-
-        if (!id.equals(showId)) {
+        if (!id.equals(show.id())) {
             throw new IllegalArgumentException("Put not allowed! IDs do not match.");
         }
-
-        showService.updateShow(id, dtoMapper.from(show));
-
-        return dtoMapper.from(showService.getShow(id));
+        return dtoMapper.from(showService.updateShow(id, dtoMapper.from(show)));
     }
 
     @DeleteMapping("/shows/{id}")
