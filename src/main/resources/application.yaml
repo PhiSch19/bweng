@@ -2,13 +2,13 @@ spring:
   datasource:
     username: user
     password: pw
-    url: jdbc:mysql://localhost:3306/bweng_ws23
+    url: jdbc:mariadb://localhost:3306/bweng_ws23
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MariaDBDialect
 security:
   cors:
     allowed-origins: localhost:8080
