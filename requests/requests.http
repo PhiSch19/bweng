@@ -36,3 +36,13 @@ Content-Type: application/json
   "movieId": "2a27199f-6bc2-4a79-89e2-b538a10e30be",
   "roomId": "c38d5b4a-78fb-4d35-8f4c-b73ce4cf5a0a"
 }
+
+
+###
+POST http://localhost:8081/user/register
+Content-Type: application/json
+
+{
+  "username": "test",
+  "password": "test"
+}
