@@ -13,5 +13,7 @@ security:
   cors:
     allowed-origins: localhost:8080
     allowed-methods: GET, POST, PUT, OPTIONS, HEAD
+  jwt:
+    secret: "IshouldProbablyNotBeStaticForever"
 server:
   port: 8081
