@@ -19,8 +19,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(registry -> registry.requestMatchers("/error").permitAll().anyRequest().authenticated())
-                .httpBasic(basic -> {
-                })
+                .httpBasic(basic -> {})
                 .build();
     }
 
