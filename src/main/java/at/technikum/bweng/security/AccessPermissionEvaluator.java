@@ -6,14 +6,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class AccessPermissionEvaluator implements PermissionEvaluator {
-
-    private final List<AccessPermission> accessPermissions;
 
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
@@ -22,16 +18,7 @@ public class AccessPermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        boolean hasPermission = false;
-
-        for (AccessPermission accessPermission : accessPermissions) {
-            if (!accessPermission.supports(authentication, targetType)) {
-                continue;
-            }
-
-            hasPermission |= accessPermission.hasPermission(authentication, (UUID) targetId);
-        }
-
-        return hasPermission;
+        // TODO: 02.12.23 based on roles oder so
+        return true;
     }
 }
