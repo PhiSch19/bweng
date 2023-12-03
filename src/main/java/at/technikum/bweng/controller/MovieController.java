@@ -2,6 +2,8 @@ package at.technikum.bweng.controller;
 
 import at.technikum.bweng.dto.MovieDto;
 import at.technikum.bweng.dto.mapper.MovieDtoMapper;
+import at.technikum.bweng.security.roles.Public;
+import at.technikum.bweng.security.roles.Staff;
 import at.technikum.bweng.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -29,17 +31,20 @@ public class MovieController {
     private final MovieDtoMapper dtoMapper;
 
     @GetMapping
+    @Public
     public List<MovieDto> getMovies() {
         return movieService.getAll().stream().map(dtoMapper::from).toList();
     }
 
     @GetMapping("/{id}")
     @ResponseBody
+    @Public
     public MovieDto getMovie(@PathVariable UUID id) {
         return dtoMapper.from(movieService.findMovie(id));
     }
 
     @PostMapping
+    @Staff
     public MovieDto postMovie(@RequestBody @Validated MovieDto movie) {
         if (movie.id() != null) {
             throw new IllegalArgumentException("Update not allowed!");
@@ -48,6 +53,7 @@ public class MovieController {
     }
 
     @PatchMapping("/{id}")
+    @Staff
     public MovieDto patchMovie(@PathVariable UUID id, @RequestBody MovieDto movie) {
         if (movie.id() != null) {
             throw new IllegalArgumentException("ID update not allowed!");
@@ -56,6 +62,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
+    @Staff
     public MovieDto putMovie(@PathVariable UUID id, @RequestBody @Validated MovieDto movie) {
         if (!id.equals(movie.id())) {
             throw new IllegalArgumentException("Put not allowed! IDs do not match.");
@@ -64,6 +71,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/{id}")
+    @Staff
     public void deleteMovie(@PathVariable UUID id) {
         movieService.deleteMovie(id);
     }

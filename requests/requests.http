@@ -3,7 +3,7 @@ POST http://localhost:8081/user/register
 Content-Type: application/json
 
 {
-  "username": "test",
+  "username": "admin",
   "password": "test"
 }
 
@@ -12,7 +12,7 @@ POST http://localhost:8081/user/token
 Content-Type: application/json
 
 {
-  "username": "test",
+  "username": "admin",
   "password": "test"
 }
 
@@ -30,10 +30,30 @@ Authorization: Bearer {{auth_token}}
 ###
 GET http://localhost:8081/show
 
-###
+### User
 POST http://localhost:8081/movie
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjQwYjAwOS1kZDU3LTRiM2YtYmZjYy1jNTMwZmU2MTY1NjYiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTYwMjgwOCwidXNlcm5hbWUiOiJ0ZXN0Iiwicm9sZSI6IlVTRVIifQ.o2haAVoJ80wMepupv1n8liYoRINWNmm6oR_alNTuZvg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjQwYjAwOS1kZDU3LTRiM2YtYmZjYy1jNTMwZmU2MTY1NjYiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTYyMDQwOSwidXNlcm5hbWUiOiJ0ZXN0Iiwicm9sZSI6IlJPTEVfVVNFUiJ9.7luE4tO87fJ8spw4r77_hJcFgRonhvNShqyA2HsxI0M
+
+{
+  "name": "Shrek 2",
+  "durationMinutes": 15
+}
+
+### Admin
+POST http://localhost:8081/movie
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjM2Q0NzIzNi1lNGE2LTRkY2QtYWY1Yy1mZTIxNmU4MDM2MWUiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTYyMDQ0NSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIn0.qnN6hTQthj7a15ZSoUcrk4wDN-STOHRaeeet36Rl0f8
+
+{
+  "name": "Shrek 2",
+  "durationMinutes": 15
+}
+
+### Staff
+POST http://localhost:8081/movie
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MTI3ODhjZi00OWYyLTQxY2UtYjYzZS1lYWUxNmNhYzhiNDIiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTYyMDQyOCwidXNlcm5hbWUiOiJzdGFmZiIsInJvbGUiOiJST0xFX1NUQUZGIn0.VyRsMbBZEQw7w2rOnAzBuOYtT2fgNekzSmPxH5ZUMHI
 
 {
   "name": "Shrek 2",
@@ -43,6 +63,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjQwYjAwO
 ###
 POST http://localhost:8081/room
 Content-Type: application/json
+
 
 {
   "name": "room3",

@@ -2,6 +2,7 @@ package at.technikum.bweng.controller;
 
 import at.technikum.bweng.dto.ShowDto;
 import at.technikum.bweng.dto.mapper.ShowsDtoMapper;
+import at.technikum.bweng.security.roles.Staff;
 import at.technikum.bweng.service.ShowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +38,7 @@ public class ShowController {
     }
 
     @PostMapping
+    @Staff
     public ShowDto postShow(@RequestBody @Validated ShowDto show) {
         if (show.id() != null) {
             throw new IllegalArgumentException("Update not allowed!");
@@ -45,6 +47,7 @@ public class ShowController {
     }
 
     @PutMapping("/{id}")
+    @Staff
     public ShowDto putMovie(@PathVariable UUID id, @RequestBody @Validated ShowDto show) {
         if (!id.equals(show.id())) {
             throw new IllegalArgumentException("Put not allowed! IDs do not match.");
@@ -53,6 +56,7 @@ public class ShowController {
     }
 
     @DeleteMapping("/{id}")
+    @Staff
     public void deleteShow(@PathVariable UUID id) {
         this.showService.deleteShow(id);
     }

@@ -3,6 +3,7 @@ package at.technikum.bweng.controller;
 
 import at.technikum.bweng.dto.RoomDto;
 import at.technikum.bweng.dto.mapper.RoomDtoMapper;
+import at.technikum.bweng.security.roles.Admin;
 import at.technikum.bweng.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +40,7 @@ public class RoomController {
     }
 
     @PostMapping
+    @Admin
     public RoomDto postRoom(@RequestBody @Validated RoomDto room) {
         if (room.id() != null) {
             throw new IllegalArgumentException("Update not allowed!");
@@ -47,6 +49,7 @@ public class RoomController {
     }
 
     @PatchMapping("/{id}")
+    @Admin
     public RoomDto patchRoom(@PathVariable UUID id, @RequestBody RoomDto room) {
         if (room.id() == null) {
             throw new IllegalArgumentException("ID update not allowed!");
@@ -55,6 +58,7 @@ public class RoomController {
     }
 
     @PutMapping("/{id}")
+    @Admin
     public RoomDto putRoom(@PathVariable UUID id, @RequestBody @Validated RoomDto room) {
         if (!id.equals(room.id())) {
             throw new IllegalArgumentException("Put not allowed! IDs do not match.");
@@ -63,6 +67,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/{id}")
+    @Admin
     public void deleteRoom(@PathVariable UUID id) {
         roomService.deleteRoom(id);
     }
