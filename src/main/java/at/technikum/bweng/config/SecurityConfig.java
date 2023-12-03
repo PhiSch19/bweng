@@ -7,6 +7,7 @@ import at.technikum.bweng.security.roles.Staff;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,15 +44,18 @@ public class SecurityConfig {
                         .requestMatchers(request -> annotationMatcher(handlerMethodMapping, request, Public.class)).permitAll()
                         .requestMatchers(request -> annotationMatcher(handlerMethodMapping, request, Staff.class)).hasRole("STAFF")
                         .requestMatchers(request -> annotationMatcher(handlerMethodMapping, request, Admin.class)).hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyRequest().hasRole("USER"))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
-    private static boolean annotationMatcher(AbstractHandlerMethodMapping<RequestMappingInfo> handlerMethodMapping, HttpServletRequest request, Class<? extends Annotation> staff) {
+    private static boolean annotationMatcher(AbstractHandlerMethodMapping<RequestMappingInfo> handlerMethodMapping, HttpServletRequest request, Class<? extends Annotation> annotation) {
         try {
-            HandlerMethod hm = (HandlerMethod) handlerMethodMapping.getHandler(request).getHandler();
-            return hm.hasMethodAnnotation(staff);
+            if (handlerMethodMapping.getHandler(request).getHandler() instanceof HandlerMethod hm) {
+                return hm.hasMethodAnnotation(annotation);
+            }
+            return false;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
