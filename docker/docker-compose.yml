@@ -11,3 +11,18 @@ services:
       MYSQL_PASSWORD: pw
     ports:
       - "3306:3306"
+  minio:
+    image: bitnami/minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadminpw
+      MINIO_DEFAULT_BUCKETS: files
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio:/data
+
+volumes:
+  minio:
+
