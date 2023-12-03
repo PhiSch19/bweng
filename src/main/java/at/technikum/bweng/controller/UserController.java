@@ -1,5 +1,6 @@
 package at.technikum.bweng.controller;
 
+import at.technikum.bweng.dto.TokenResponseDto;
 import at.technikum.bweng.dto.UserCredentialsDto;
 import at.technikum.bweng.service.AuthService;
 import at.technikum.bweng.service.UserService;
@@ -24,8 +25,8 @@ public class UserController {
     }
 
     @PostMapping("/token")
-    public String token(@RequestBody @Valid UserCredentialsDto credentials) {
-        return authService.authenticate(credentials.username(), credentials.password());
+    public TokenResponseDto token(@RequestBody @Valid UserCredentialsDto credentials) {
+        return new TokenResponseDto(authService.authenticate(credentials.username(), credentials.password()));
     }
 
 }

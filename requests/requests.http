@@ -1,44 +1,4 @@
 ###
-GET http://localhost:8081/movies
-
-###
-GET http://localhost:8081/rooms
-
-###
-GET http://localhost:8081/shows
-
-###
-POST http://localhost:8081/movies
-Content-Type: application/json
-
-{
-  "name": "Shrek 2",
-  "durationMinutes": 15
-}
-
-###
-POST http://localhost:8081/rooms
-Content-Type: application/json
-
-{
-  "name": "room3",
-  "capacity": 500,
-  "cleaningMinutes": 60
-}
-
-
-###
-POST http://localhost:8081/shows
-Content-Type: application/json
-
-{
-  "startTime": "2023-11-27T15:00:00",
-  "movieId": "2a27199f-6bc2-4a79-89e2-b538a10e30be",
-  "roomId": "c38d5b4a-78fb-4d35-8f4c-b73ce4cf5a0a"
-}
-
-
-###
 POST http://localhost:8081/user/register
 Content-Type: application/json
 
@@ -55,3 +15,49 @@ Content-Type: application/json
   "username": "test",
   "password": "test"
 }
+
+> {%
+    client.global.set("auth_token", response.body.json.token);
+%}
+
+###
+GET http://localhost:8081/movie
+
+###
+GET http://localhost:8081/room
+Authorization: Bearer {{auth_token}}
+
+###
+GET http://localhost:8081/show
+
+###
+POST http://localhost:8081/movie
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjQwYjAwOS1kZDU3LTRiM2YtYmZjYy1jNTMwZmU2MTY1NjYiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTYwMjgwOCwidXNlcm5hbWUiOiJ0ZXN0Iiwicm9sZSI6IlVTRVIifQ.o2haAVoJ80wMepupv1n8liYoRINWNmm6oR_alNTuZvg
+
+{
+  "name": "Shrek 2",
+  "durationMinutes": 15
+}
+
+###
+POST http://localhost:8081/room
+Content-Type: application/json
+
+{
+  "name": "room3",
+  "capacity": 500,
+  "cleaningMinutes": 60
+}
+
+
+###
+POST http://localhost:8081/show
+Content-Type: application/json
+
+{
+  "startTime": "2023-11-27T15:00:00",
+  "movieId": "2a27199f-6bc2-4a79-89e2-b538a10e30be",
+  "roomId": "c38d5b4a-78fb-4d35-8f4c-b73ce4cf5a0a"
+}
+
