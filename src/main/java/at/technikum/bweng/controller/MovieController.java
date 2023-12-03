@@ -6,18 +6,15 @@ import at.technikum.bweng.security.roles.Public;
 import at.technikum.bweng.security.roles.Staff;
 import at.technikum.bweng.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +38,24 @@ public class MovieController {
     @Public
     public MovieDto getMovie(@PathVariable UUID id) {
         return dtoMapper.from(movieService.findMovie(id));
+    }
+
+    @PostMapping("{id}/cover")
+    @Staff
+    public MovieDto uploadCover(@PathVariable UUID id, @RequestParam("file") MultipartFile toUpload) throws FileUploadException {
+        return dtoMapper.from(movieService.upload(id, toUpload));
+    }
+
+    @GetMapping("{id}/cover")
+    @Public
+    public ResponseEntity<Resource> retrieveCover(@PathVariable UUID id) throws FileNotFoundException {
+        Resource resource = this.movieService.getCover(id);
+        MediaType mediaType = this.movieService.getCoverMediaType(id);
+
+        return ResponseEntity
+                .ok()
+                .contentType(mediaType)
+                .body(resource);
     }
 
     @PostMapping

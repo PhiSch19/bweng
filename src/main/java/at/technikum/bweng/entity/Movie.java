@@ -32,4 +32,8 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie")
     private List<Show> shows;
+
+    private String coverId;
+
+    private String coverContentType;
 }

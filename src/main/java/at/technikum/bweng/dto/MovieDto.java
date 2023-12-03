@@ -7,5 +7,5 @@ import jakarta.validation.constraints.Positive;
 
 import java.util.UUID;
 
-public record MovieDto(UUID id, @NotBlank String name, @NotNull @Positive @Max(360) Integer durationMinutes) {
+public record MovieDto(UUID id, @NotBlank String name, @NotNull @Positive @Max(360) Integer durationMinutes, String coverId) {
 }
