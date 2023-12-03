@@ -23,6 +23,7 @@ public class JwtIssuer implements TokenIssuer {
     public String issue(UUID userId, String username, String role) {
         return JWT.create()
                 .withSubject(String.valueOf(userId))
+                .withIssuer(jwtProperties.issuer())
                 .withExpiresAt(Instant.now(clock).plus(Duration.of(2, ChronoUnit.HOURS)))
                 .withClaim("username", username)
                 .withClaim("role", role)

@@ -16,5 +16,6 @@ security:
     allowed-headers:
   jwt:
     secret: Q9cXU3bgJFQC6xyPt2uh7UOreLhMAk
+    issuer: bweng
 server:
   port: 8081
