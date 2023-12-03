@@ -26,6 +26,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/user/register")
                         .permitAll()
+                        .requestMatchers("/user/token")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(basic -> {
                 })

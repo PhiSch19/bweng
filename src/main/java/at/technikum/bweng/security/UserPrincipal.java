@@ -11,9 +11,11 @@ import java.util.UUID;
 public class UserPrincipal extends User {
 
     private final UUID id;
+    private final String role;
 
     public UserPrincipal(UUID id, String username, String password, String role) {
         super(username, password, Collections.singletonList(new SimpleGrantedAuthority(role)));
         this.id = id;
+        this.role = role;
     }
 }

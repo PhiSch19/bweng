@@ -1,4 +1,6 @@
 package at.technikum.bweng.dto;
 
-public record UserCredentialsDto(String username, String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record UserCredentialsDto(@NotBlank String username, @NotBlank String password) {
 }

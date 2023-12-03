@@ -13,5 +13,8 @@ security:
   cors:
     allowed-origins: localhost:8080
     allowed-methods: GET, POST, PUT, OPTIONS, HEAD
+    allowed-headers:
+  jwt:
+    secret: Q9cXU3bgJFQC6xyPt2uh7UOreLhMAk
 server:
   port: 8081

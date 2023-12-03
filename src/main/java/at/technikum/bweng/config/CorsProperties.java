@@ -7,6 +7,5 @@ import java.util.List;
 
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "security.cors")
-public record Cors(String allowedOrigins, List<String> allowedMethods) {
-
+public record CorsProperties(String allowedOrigins, List<String> allowedMethods, List<String> allowedHeaders) {
 }
