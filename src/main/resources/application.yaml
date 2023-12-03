@@ -9,6 +9,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MariaDBDialect
+  servlet:
+    multipart:
+      max-file-size: 20MB
 security:
   cors:
     allowed-origins: http://localhost:8080/
@@ -18,3 +21,10 @@ security:
     issuer: bweng
 server:
   port: 8081
+
+minio:
+  url: http://localhost
+  port: 9000
+  user: minioadmin
+  password: minioadminpw
+  bucket: files
