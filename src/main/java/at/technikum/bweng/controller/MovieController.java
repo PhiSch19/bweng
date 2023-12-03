@@ -40,13 +40,13 @@ public class MovieController {
         return dtoMapper.from(movieService.findMovie(id));
     }
 
-    @PostMapping("{id}/cover")
+    @PostMapping("/{id}/cover")
     @Staff
     public MovieDto uploadCover(@PathVariable UUID id, @RequestParam("file") MultipartFile toUpload) throws FileUploadException {
         return dtoMapper.from(movieService.upload(id, toUpload));
     }
 
-    @GetMapping("{id}/cover")
+    @GetMapping("/{id}/cover")
     @Public
     public ResponseEntity<Resource> retrieveCover(@PathVariable UUID id) throws FileNotFoundException {
         Resource resource = this.movieService.getCover(id);
