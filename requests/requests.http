@@ -3,7 +3,7 @@ POST http://localhost:8081/user/register
 Content-Type: application/json
 
 {
-  "username": "admin",
+  "username": "admin1",
   "password": "test"
 }
 
@@ -33,7 +33,7 @@ GET http://localhost:8081/show
 ### User
 POST http://localhost:8081/movie
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjQwYjAwOS1kZDU3LTRiM2YtYmZjYy1jNTMwZmU2MTY1NjYiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTYyNzg2NSwidXNlcm5hbWUiOiJ0ZXN0Iiwicm9sZSI6IlJPTEVfVVNFUiJ9.Wex_vYywlPDhOslucYEngsd9yvLhG2sEwdlHIQ69VKQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjM2Q0NzIzNi1lNGE2LTRkY2QtYWY1Yy1mZTIxNmU4MDM2MWUiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTg4NjY2OCwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIn0.HTnIvZz6d-E5h1NhCTtKsfL6RICc_yREmYSCDv9Zs-w
 
 {
   "name": "Shrek 2",
@@ -53,7 +53,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjM2Q0NzIzN
 ### Staff
 POST http://localhost:8081/movie
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MTI3ODhjZi00OWYyLTQxY2UtYjYzZS1lYWUxNmNhYzhiNDIiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTYyNzkyMCwidXNlcm5hbWUiOiJzdGFmZiIsInJvbGUiOiJST0xFX1NUQUZGIn0.eX6MwNsfGkzvg488e4e9eNTFm2AhgU8aXkDvTXmIkAw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MTI3ODhjZi00OWYyLTQxY2UtYjYzZS1lYWUxNmNhYzhiNDIiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTg4NjYzMCwidXNlcm5hbWUiOiJzdGFmZiIsInJvbGUiOiJST0xFX1NUQUZGIn0.haT6RE3gu3w38iHYBF8y52CSmni6ozubQlkQMF5xfuA
 
 {
   "name": "Shrek 2",

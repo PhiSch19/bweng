@@ -33,7 +33,7 @@ public class MovieControllerTests {
 
     @Before
     public void setUp() {
-        MovieService movieService = new MovieService(movieRepository);
+        MovieService movieService = new MovieService(movieRepository, null);
         mockMvc = MockMvcBuilders.standaloneSetup(new MovieController(movieService, new MovieDtoMapperImpl())).build();
     }
 
@@ -47,7 +47,7 @@ public class MovieControllerTests {
 
         Mockito.when(movieRepository.findAll()).thenReturn(List.of(movie));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/movies")
+        mockMvc.perform(MockMvcRequestBuilders.get("/movie")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -73,7 +73,7 @@ public class MovieControllerTests {
 
         Mockito.when(movieRepository.findById(id)).thenReturn(Optional.of(movie));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/movies/{id}", id)
+        mockMvc.perform(MockMvcRequestBuilders.get("/movie/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -97,7 +97,7 @@ public class MovieControllerTests {
 
         Mockito.when(movieRepository.save(Mockito.any())).thenReturn(movie);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/movies")
+        mockMvc.perform(MockMvcRequestBuilders.post("/movie")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -130,7 +130,7 @@ public class MovieControllerTests {
         Mockito.when(movieRepository.findById(id)).thenReturn(Optional.of(movie));
         Mockito.when(movieRepository.save(Mockito.any())).thenReturn(movie);
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/movies/{id}", id)
+        mockMvc.perform(MockMvcRequestBuilders.patch("/movie/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -163,7 +163,7 @@ public class MovieControllerTests {
         Mockito.when(movieRepository.findById(id)).thenReturn(Optional.of(movie));
         Mockito.when(movieRepository.save(Mockito.any())).thenReturn(movie);
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/movies/{id}", id)
+        mockMvc.perform(MockMvcRequestBuilders.put("/movie/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -196,7 +196,7 @@ public class MovieControllerTests {
 
         Mockito.when(movieRepository.findById(id)).thenReturn(Optional.of(movie));
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/movies/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/movie/{id}", id))
                 .andExpect(status().isOk());
     }
 
