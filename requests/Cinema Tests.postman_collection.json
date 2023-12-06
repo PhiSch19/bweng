@@ -1,11 +1,103 @@
 {
 	"info": {
-		"_postman_id": "5fa7e3e7-95a4-4c29-8e8a-5f191228eb8c",
+		"_postman_id": "2c64dc3e-f6b8-45d7-8cf3-fdefd4b902aa",
 		"name": "Cinema Tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "21647299"
 	},
 	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"patrick\", \"password\": \"password\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/user/register",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const data = pm.response.json();\r",
+									"    if ( data.token ) {\r",
+									"        pm.collectionVariables.set(\"token\", data.token);\r",
+									"\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MGFmZTA4Ni1lM2FlLTQ4ZGUtODhjMi0wMWIzN2ZkNjJiYWQiLCJpc3MiOiJid2VuZyIsImV4cCI6MTcwMTYzODMyMSwidXNlcm5hbWUiOiJhZG1pbiIsInJvbGUiOiJST0xFX0FETUlOIn0.qPWn_hddrEMgSzwUJ5s-Yq3dAix-WssaTf2s9Fh_NFA",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\": \"admin\", \"password\": \"pw\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_base_api}}/user/token",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"user",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Movies",
 			"item": [
@@ -26,14 +118,20 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/movies",
+							"raw": "{{url_base_api}}/movie",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"movies"
+								"movie"
 							]
 						}
 					},
@@ -60,7 +158,13 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"name\": \"Postman Test Movie\",\r\n  \"durationMinutes\": 200\r\n}",
@@ -71,12 +175,59 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base_api}}/movies",
+							"raw": "{{url_base_api}}/movie",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"movies"
+								"movie"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Cover",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var testId = pm.globals.get(\"test_id\");\r",
+									"pm.variables.set(\"test_id\", testId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/petzl/Pictures/starwars.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url_base_api}}/movie/{{test_id}}/cover",
+							"host": [
+								"{{url_base_api}}"
+							],
+							"path": [
+								"movie",
+								"{{test_id}}",
+								"cover"
 							]
 						}
 					},
@@ -109,15 +260,22 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"raw": "{{url_base_api}}/movie/{{test_id}}/cover",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"movies",
-								"{{test_id}}"
+								"movie",
+								"{{test_id}}",
+								"cover"
 							]
 						}
 					},
@@ -150,7 +308,13 @@
 					],
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"name\": \"Postman Test Movie 2\",\r\n  \"durationMinutes\": 150\r\n}",
@@ -161,12 +325,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"raw": "{{url_base_api}}/movie/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"movies",
+								"movie",
 								"{{test_id}}"
 							]
 						}
@@ -200,15 +364,22 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"raw": "{{url_base_api}}/movie/{{test_id}}/cover",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"movies",
-								"{{test_id}}"
+								"movie",
+								"{{test_id}}",
+								"cover"
 							]
 						}
 					},
@@ -241,7 +412,13 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"durationMinutes\": 150\r\n}",
@@ -252,13 +429,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"raw": "{{url_base_api}}/movie/{{test_id}}/cover",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"movies",
-								"{{test_id}}"
+								"movie",
+								"{{test_id}}",
+								"cover"
 							]
 						}
 					},
@@ -291,56 +469,22 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"raw": "{{url_base_api}}/movie/{{test_id}}/cover",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"movies",
-								"{{test_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get patched movie Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"MasterData: Get patched movie - Status code is 200\", () => {\r",
-									"   pm.expect(pm.response.code).to.eql(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"var testId = pm.globals.get(\"test_id\");\r",
-									"pm.variables.set(\"test_id\", testId);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url_base_api}}/movies/{{test_id}}",
-							"host": [
-								"{{url_base_api}}"
-							],
-							"path": [
-								"movies",
-								"{{test_id}}"
+								"movie",
+								"{{test_id}}",
+								"cover"
 							]
 						}
 					},
@@ -374,14 +518,20 @@
 					],
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/movies/{{test_id}}",
+							"raw": "{{url_base_api}}/movie/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"movies",
+								"movie",
 								"{{test_id}}"
 							]
 						}
@@ -410,14 +560,20 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/rooms",
+							"raw": "{{url_base_api}}/room",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"rooms"
+								"room"
 							]
 						}
 					},
@@ -444,7 +600,13 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"name\": \"Test Room\",\r\n  \"capacity\": 300,\r\n  \"cleaningMinutes\": 30\r\n}",
@@ -455,12 +617,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base_api}}/rooms",
+							"raw": "{{url_base_api}}/room",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"rooms"
+								"room"
 							]
 						}
 					},
@@ -493,14 +655,20 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"raw": "{{url_base_api}}/room/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"rooms",
+								"room",
 								"{{test_id}}"
 							]
 						}
@@ -534,7 +702,13 @@
 					],
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"name\": \"Test Room 2\",\r\n  \"capacity\": 150,\r\n  \"cleaningMinutes\": 30\r\n}",
@@ -545,12 +719,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"raw": "{{url_base_api}}/room/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"rooms",
+								"room",
 								"{{test_id}}"
 							]
 						}
@@ -584,14 +758,20 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"raw": "{{url_base_api}}/room/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"rooms",
+								"room",
 								"{{test_id}}"
 							]
 						}
@@ -625,7 +805,13 @@
 					],
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"capacity\": 400,\r\n  \"cleaningMinutes\": 30\r\n}",
@@ -636,12 +822,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"raw": "{{url_base_api}}/room/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"rooms",
+								"room",
 								"{{test_id}}"
 							]
 						}
@@ -675,14 +861,20 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"raw": "{{url_base_api}}/room/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"rooms",
+								"room",
 								"{{test_id}}"
 							]
 						}
@@ -717,14 +909,20 @@
 					],
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/rooms/{{test_id}}",
+							"raw": "{{url_base_api}}/room/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"rooms",
+								"room",
 								"{{test_id}}"
 							]
 						}
@@ -753,14 +951,20 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/shows",
+							"raw": "{{url_base_api}}/show",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"shows"
+								"show"
 							]
 						}
 					},
@@ -787,7 +991,13 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"startTime\": \"2023-10-24T17:00:00\",\r\n  \"movieId\": \"00ec0d7e-2587-4345-95fe-f1766cb9886d\",\r\n  \"roomId\": \"ec74e603-c485-450f-aaca-2898a7d58072\"\r\n}",
@@ -798,12 +1008,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base_api}}/shows",
+							"raw": "{{url_base_api}}/show",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"shows"
+								"show"
 							]
 						}
 					},
@@ -836,14 +1046,20 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/shows/{{test_id}}",
+							"raw": "{{url_base_api}}/show/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"shows",
+								"show",
 								"{{test_id}}"
 							]
 						}
@@ -877,7 +1093,13 @@
 					],
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"id\": \"{{test_id}}\",\r\n  \"startTime\": \"2023-11-24T17:00:00\",\r\n  \"movieId\": \"00ec0d7e-2587-4345-95fe-f1766cb9886d\",\r\n  \"roomId\": \"ec74e603-c485-450f-aaca-2898a7d58072\"\r\n}",
@@ -888,12 +1110,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url_base_api}}/shows/{{test_id}}",
+							"raw": "{{url_base_api}}/show/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"shows",
+								"show",
 								"{{test_id}}"
 							]
 						}
@@ -927,14 +1149,20 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/shows/{{test_id}}",
+							"raw": "{{url_base_api}}/show/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"shows",
+								"show",
 								"{{test_id}}"
 							]
 						}
@@ -969,14 +1197,20 @@
 					],
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{url_base_api}}/shows/{{test_id}}",
+							"raw": "{{url_base_api}}/show/{{test_id}}",
 							"host": [
 								"{{url_base_api}}"
 							],
 							"path": [
-								"shows",
+								"show",
 								"{{test_id}}"
 							]
 						}
@@ -1015,6 +1249,10 @@
 			"key": "url_base_api",
 			"value": "localhost:8081",
 			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
 		}
 	]
 }
