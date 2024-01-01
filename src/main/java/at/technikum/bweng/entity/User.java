@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -25,7 +26,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -34,5 +35,11 @@ public class User {
     @Column(nullable = false)
     private String role;
 
+    private String firstname;
+    private String lastname;
+    private String email;
+    private String salutation;
+    private String country;
+    private LocalDate birthdate;
 
 }

@@ -2,6 +2,8 @@ package at.technikum.bweng.controller;
 
 import at.technikum.bweng.dto.TokenResponseDto;
 import at.technikum.bweng.dto.UserCredentialsDto;
+import at.technikum.bweng.dto.UserDto;
+import at.technikum.bweng.dto.mapper.UserDtoMapper;
 import at.technikum.bweng.security.roles.Public;
 import at.technikum.bweng.service.AuthService;
 import at.technikum.bweng.service.UserService;
@@ -21,12 +23,13 @@ public class UserController {
 
     private final UserService userService;
     private final AuthService authService;
+    private final UserDtoMapper dtoMapper;
 
     @PostMapping("/register")
     @Public
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void register(@RequestBody @Valid UserCredentialsDto credentials) {
-        userService.register(credentials.username(), credentials.password());
+    public void register(@RequestBody @Valid UserDto userDto) {
+        userService.register(dtoMapper.from(userDto));
     }
 
     @PostMapping("/token")

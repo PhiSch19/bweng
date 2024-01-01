@@ -20,17 +20,16 @@ public class UserService {
         return repository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
     }
 
-    public void register(String username, String password) {
+    public void register(User user) {
 
-        if (repository.findByUsername(username).isPresent()) {
+        if (repository.findByUsername(user.getUsername()).isPresent()) {
             throw new RuntimeException("User already exists!"); // TODO: 02.12.23 Exception-Handling
         }
 
-        User user = User.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .role("ROLE_USER")
-                .build();
+        //set defaults and encode pw
+        user.setRole("ROLE_USER");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         repository.save(user);
     }
 
