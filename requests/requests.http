@@ -3,16 +3,23 @@ POST http://localhost:8081/user/register
 Content-Type: application/json
 
 {
-  "username": "admin1",
-  "password": "test"
+  "username": "admi2a",
+  "password": "test",
+  "details": {
+    "firstname": "Test-Admin",
+    "salutation": "Herr"
+  }
 }
+
+###
+GET http://localhost:8081/user/0a440228-35f5-4c1c-bbf0-e6c0869ea3e3/details
 
 ###
 POST http://localhost:8081/user/token
 Content-Type: application/json
 
 {
-  "username": "admin",
+  "username": "test",
   "password": "test"
 }
 

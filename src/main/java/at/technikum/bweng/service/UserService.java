@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -18,6 +20,10 @@ public class UserService {
     public User findByUsername(String username) {
         // TODO: 22.11.23 ExceptionHandling beim orElseThrow
         return repository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+    }
+
+    public User get(UUID id) {
+        return repository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     public void register(User user) {

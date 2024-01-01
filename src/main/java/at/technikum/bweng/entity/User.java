@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -40,6 +39,5 @@ public class User {
     private String email;
     private String salutation;
     private String country;
-    private LocalDate birthdate;
 
 }
