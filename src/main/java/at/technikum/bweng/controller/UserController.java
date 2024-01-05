@@ -11,14 +11,15 @@ import at.technikum.bweng.service.AuthService;
 import at.technikum.bweng.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -34,9 +35,8 @@ public class UserController {
 
     @PostMapping("/register")
     @Public
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public void register(@RequestBody @Valid UserDto userDto) {
-        userService.register(userDtoMapper.from(userDto));
+    public UserDetailsDto register(@RequestBody @Valid UserDto userDto) {
+        return detailsDtoMapper.from(userService.register(userDtoMapper.from(userDto)));
     }
 
     @PostMapping("/token")
@@ -49,6 +49,12 @@ public class UserController {
     @Public //TODO 1.1.2024 Authentifizierung nur so, dass sein eigener sichtbar ist oder man Admin sein muss
     public UserDetailsDto details(@PathVariable UUID id) {
         return detailsDtoMapper.from(userService.get(id));
+    }
+
+    @PostMapping("/{id}/profile-picture")
+    @Public //TODO 1.1.2024 Authentifizierung nur so, dass sein eigener sichtbar ist oder man Admin sein muss
+    public UserDetailsDto uploadProfilePicture(@PathVariable UUID id, @RequestParam("file") MultipartFile profilePicture) throws FileUploadException {
+        return detailsDtoMapper.from(userService.uploadProfilePicture(id, profilePicture));
     }
 
 }

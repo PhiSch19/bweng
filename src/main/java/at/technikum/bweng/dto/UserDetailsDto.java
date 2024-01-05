@@ -9,5 +9,6 @@ public record UserDetailsDto(String firstname,
                              @Email String email,
                              String salutation,
                              String country,
-                             UUID id) {
+                             UUID id,
+                             UUID profilePictureId) {
 }

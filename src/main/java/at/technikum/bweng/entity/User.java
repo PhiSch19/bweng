@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,5 +41,9 @@ public class User {
     private String email;
     private String salutation;
     private String country;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_picture_id")
+    private File profilePicture;
 
 }
