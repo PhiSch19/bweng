@@ -3,6 +3,7 @@ package at.technikum.bweng.controller;
 import at.technikum.bweng.dto.ShowDto;
 import at.technikum.bweng.dto.mapper.ShowsDtoMapper;
 import at.technikum.bweng.security.roles.Staff;
+import at.technikum.bweng.security.roles.User;
 import at.technikum.bweng.service.ShowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -28,11 +29,13 @@ public class ShowController {
     private final ShowsDtoMapper dtoMapper;
 
     @GetMapping
+    @User
     public List<ShowDto> getAll() {
         return this.showService.findAllShows().stream().map(dtoMapper::from).toList();
     }
 
     @GetMapping("/{id}")
+    @User
     public ShowDto getShow(@PathVariable UUID id) {
         return dtoMapper.from(this.showService.getShow(id));
     }

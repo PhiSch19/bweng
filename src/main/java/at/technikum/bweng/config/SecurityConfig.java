@@ -1,18 +1,23 @@
 package at.technikum.bweng.config;
 
 import at.technikum.bweng.security.JwtAuthenticationFilter;
+import at.technikum.bweng.security.UserAccessPermissionEvaluator;
 import at.technikum.bweng.security.roles.Admin;
 import at.technikum.bweng.security.roles.Public;
 import at.technikum.bweng.security.roles.Staff;
+import at.technikum.bweng.security.roles.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -31,6 +36,7 @@ import java.lang.annotation.Annotation;
 
 @EnableWebSecurity
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -44,8 +50,9 @@ public class SecurityConfig {
                         .requestMatchers(request -> annotationMatcher(handlerMethodMapping, request, Public.class)).permitAll()
                         .requestMatchers(request -> annotationMatcher(handlerMethodMapping, request, Staff.class)).hasRole("STAFF")
                         .requestMatchers(request -> annotationMatcher(handlerMethodMapping, request, Admin.class)).hasRole("ADMIN")
+                        .requestMatchers(request -> annotationMatcher(handlerMethodMapping, request, User.class)).hasRole("USER")
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                        .anyRequest().hasRole("USER"))
+                        .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
@@ -87,5 +94,13 @@ public class SecurityConfig {
         expressionHandler.setRoleHierarchy(roleHierarchy());
         return expressionHandler;
     }
+
+    @Bean
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler(UserAccessPermissionEvaluator accessPermissionEvaluator) {
+        DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
+        expressionHandler.setPermissionEvaluator(accessPermissionEvaluator);
+        return expressionHandler;
+    }
+
 
 }

@@ -4,6 +4,7 @@ package at.technikum.bweng.controller;
 import at.technikum.bweng.dto.RoomDto;
 import at.technikum.bweng.dto.mapper.RoomDtoMapper;
 import at.technikum.bweng.security.roles.Admin;
+import at.technikum.bweng.security.roles.Staff;
 import at.technikum.bweng.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -30,11 +31,13 @@ public class RoomController {
     private final RoomDtoMapper dtoMapper;
 
     @GetMapping
+    @Staff
     public List<RoomDto> getRooms() {
         return this.roomService.findAllRooms().stream().map(dtoMapper::from).toList();
     }
 
     @GetMapping("/{id}")
+    @Staff
     public RoomDto getRoom(@PathVariable UUID id) {
         return dtoMapper.from(roomService.getRoom(id));
     }

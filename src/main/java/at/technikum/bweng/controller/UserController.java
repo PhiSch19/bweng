@@ -12,6 +12,7 @@ import at.technikum.bweng.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,13 +47,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}/details")
-    @Public //TODO 1.1.2024 Authentifizierung nur so, dass sein eigener sichtbar ist oder man Admin sein muss
+    @PreAuthorize("hasPermission(#id, 'at.technikum.bweng.entity.User', 'read')")
     public UserDetailsDto details(@PathVariable UUID id) {
         return detailsDtoMapper.from(userService.get(id));
     }
 
     @PostMapping("/{id}/profile-picture")
-    @Public //TODO 1.1.2024 Authentifizierung nur so, dass sein eigener sichtbar ist oder man Admin sein muss
+    @PreAuthorize("hasPermission(#id, 'at.technikum.bweng.entity.User', 'update')")
     public UserDetailsDto uploadProfilePicture(@PathVariable UUID id, @RequestParam("file") MultipartFile profilePicture) throws FileUploadException {
         return detailsDtoMapper.from(userService.uploadProfilePicture(id, profilePicture));
     }
