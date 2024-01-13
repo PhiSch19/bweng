@@ -12,7 +12,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -45,5 +48,11 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "profile_picture_id")
     private File profilePicture;
+
+    @UpdateTimestamp
+    private LocalDateTime lastUpdatedOn;
+
+    @CreationTimestamp
+    private LocalDateTime createdOn;
 
 }

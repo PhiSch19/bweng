@@ -13,6 +13,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,6 +33,12 @@ public class Show {
     private UUID id;
 
     private LocalDateTime startTime;
+
+    @UpdateTimestamp
+    private LocalDateTime lastUpdatedOn;
+
+    @CreationTimestamp
+    private LocalDateTime createdOn;
 
     @ManyToOne
     @JoinColumn(name = "room_id")

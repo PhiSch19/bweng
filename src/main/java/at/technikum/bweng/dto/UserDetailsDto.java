@@ -2,6 +2,7 @@ package at.technikum.bweng.dto;
 
 import jakarta.validation.constraints.Email;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record UserDetailsDto(String firstname,
@@ -10,5 +11,7 @@ public record UserDetailsDto(String firstname,
                              String salutation,
                              String country,
                              UUID id,
-                             UUID profilePictureId) {
+                             UUID profilePictureId,
+                             LocalDateTime lastUpdatedOn,
+                             LocalDateTime createdOn) {
 }

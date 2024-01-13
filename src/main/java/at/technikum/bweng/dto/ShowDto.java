@@ -7,5 +7,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @TimeConflictConstraint
-public record ShowDto(UUID id, @NotNull LocalDateTime startTime, @NotNull UUID movieId, @NotNull UUID roomId) {
+public record ShowDto(
+        UUID id,
+        @NotNull LocalDateTime startTime,
+        @NotNull UUID movieId,
+        @NotNull UUID roomId,
+        LocalDateTime lastUpdatedOn,
+        LocalDateTime createdOn) {
 }

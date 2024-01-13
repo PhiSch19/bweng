@@ -30,7 +30,7 @@ public class TimeConflictValidatorTest {
         when(movieRepository.findById(any())).thenReturn(Optional.of(Movie.builder().durationMinutes(30).build()));
         when(roomRepository.findById(any())).thenReturn(Optional.of(Room.builder().shows(Collections.emptyList()).build()));
 
-        boolean valid = validator.isValid(new ShowDto(null, LocalDateTime.of(2023, 10, 24, 11, 20), UUID.randomUUID(), UUID.randomUUID()), null);
+        boolean valid = validator.isValid(new ShowDto(null, LocalDateTime.of(2023, 10, 24, 11, 20), UUID.randomUUID(), UUID.randomUUID(), null, null), null);
         Assert.assertTrue(valid);
 
     }
@@ -46,7 +46,7 @@ public class TimeConflictValidatorTest {
                 Show.builder().room(Room.builder().cleaningMinutes(10).build()).startTime(LocalDateTime.of(2023, 10, 24, 11, 15)).movie(Movie.builder().durationMinutes(10).build()).build()
         )).cleaningMinutes(10).build()));
 
-        boolean valid = validator.isValid(new ShowDto(null, LocalDateTime.of(2023, 10, 24, 11, 20), UUID.randomUUID(), UUID.randomUUID()), null);
+        boolean valid = validator.isValid(new ShowDto(null, LocalDateTime.of(2023, 10, 24, 11, 20), UUID.randomUUID(), UUID.randomUUID(), null, null), null);
         Assert.assertFalse(valid);
 
     }
@@ -62,7 +62,7 @@ public class TimeConflictValidatorTest {
                 Show.builder().room(Room.builder().cleaningMinutes(10).build()).startTime(LocalDateTime.of(2023, 10, 24, 11, 0)).movie(Movie.builder().durationMinutes(10).build()).build()
         )).cleaningMinutes(10).build()));
 
-        boolean valid = validator.isValid(new ShowDto(null, LocalDateTime.of(2023, 10, 24, 11, 19), UUID.randomUUID(), UUID.randomUUID()), null);
+        boolean valid = validator.isValid(new ShowDto(null, LocalDateTime.of(2023, 10, 24, 11, 19), UUID.randomUUID(), UUID.randomUUID(), null, null), null);
         Assert.assertFalse(valid);
 
     }
@@ -78,7 +78,7 @@ public class TimeConflictValidatorTest {
                 Show.builder().id(UUID.randomUUID()).room(Room.builder().cleaningMinutes(10).build()).startTime(LocalDateTime.of(2023, 10, 24, 11, 0)).movie(Movie.builder().durationMinutes(10).build()).build()
         )).cleaningMinutes(10).build()));
 
-        boolean valid = validator.isValid(new ShowDto(null, LocalDateTime.of(2023, 10, 24, 11, 20), UUID.randomUUID(), UUID.randomUUID()), null);
+        boolean valid = validator.isValid(new ShowDto(null, LocalDateTime.of(2023, 10, 24, 11, 20), UUID.randomUUID(), UUID.randomUUID(), null, null), null);
         Assert.assertTrue(valid);
 
     }
