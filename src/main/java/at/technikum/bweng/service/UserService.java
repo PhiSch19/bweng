@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -28,6 +29,26 @@ public class UserService {
 
     public User get(UUID id) {
         return repository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
+    public User patch(UUID id, User patchedData) {
+        User user = get(id);
+        if (patchedData.getFirstname() != null) {
+            user.setFirstname(patchedData.getFirstname());
+        }
+        if (patchedData.getLastname() != null) {
+            user.setLastname(patchedData.getLastname());
+        }
+        if (patchedData.getEmail() != null) {
+            user.setEmail(patchedData.getEmail());
+        }
+        if (patchedData.getSalutation() != null) {
+            user.setSalutation(patchedData.getSalutation());
+        }
+        if (patchedData.getCountry() != null) {
+            user.setCountry(patchedData.getCountry());
+        }
+        return repository.save(user);
     }
 
     public User register(User user) {
@@ -48,6 +69,16 @@ public class UserService {
         User user = get(id);
         File file = fileService.upload(profilePicture);
         user.setProfilePicture(file);
+        return repository.save(user);
+    }
+
+    public List<User> getAll() {
+        return repository.findAll();
+    }
+
+    public User updateRole(UUID id, String role) {
+        User user = get(id);
+        user.setRole(role);
         return repository.save(user);
     }
 
