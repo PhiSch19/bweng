@@ -23,7 +23,6 @@ public class UserService {
     private final FileService fileService;
 
     public User findByUsername(String username) {
-        // TODO: 22.11.23 ExceptionHandling beim orElseThrow
         return repository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
     }
 
