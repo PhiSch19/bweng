@@ -54,7 +54,7 @@ public class RoomController {
     @PatchMapping("/{id}")
     @Admin
     public RoomDto patchRoom(@PathVariable UUID id, @RequestBody RoomDto room) {
-        if (room.id() == null) {
+        if (room.id() != null) {
             throw new IllegalArgumentException("ID update not allowed!");
         }
         return dtoMapper.from(roomService.patchRoom(id, dtoMapper.from(room)));

@@ -97,10 +97,10 @@ class UserControllerTest {
         userService.register(user);
 
         Assertions.assertThatExceptionOfType(jakarta.servlet.ServletException.class)
-                        .isThrownBy(() -> mvc.perform(
-                                        MockMvcRequestBuilders.post("/user/register")
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                                .content("""
+                .isThrownBy(() -> mvc.perform(
+                                MockMvcRequestBuilders.post("/user/register")
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .content("""
                                         {
                                           "username": "test",
                                           "password": "AAAAaaaa123!!!",
@@ -113,8 +113,8 @@ class UserControllerTest {
                                           }
                                         }
                                         """)
-                                )
-                                .andExpect(MockMvcResultMatchers.status().isOk()));
+                        )
+                        .andExpect(MockMvcResultMatchers.status().isOk()));
 
 
 
@@ -185,11 +185,11 @@ class UserControllerTest {
         String token = authService.authenticate(user.getUsername(), password);
 
         ResultActions response  = mvc.perform(MockMvcRequestBuilders.get("/user/"+ user.getId() +"/details")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "bearer " + token));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "bearer " + token));
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.firstname").value(user.getFirstname()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstname").value(user.getFirstname()));
     }
 
     @Test
@@ -272,7 +272,7 @@ class UserControllerTest {
                 .content(String.format("""
                                         {"firstname": "%s"}
                                         """, patchFirstName))
-                );
+        );
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.firstname").value(patchFirstName));
@@ -555,8 +555,8 @@ class UserControllerTest {
         String token = authService.authenticate(user.getUsername(), password);
 
         ResultActions response = mvc.perform(MockMvcRequestBuilders.multipart("/user/"+ user.getId() +"/profile-picture")
-                        .file(file)
-                        .header("Authorization", "bearer " + token));
+                .file(file)
+                .header("Authorization", "bearer " + token));
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.profilePictureId").isNotEmpty());
@@ -635,6 +635,4 @@ class UserControllerTest {
 
 
     }
-
-
 }
