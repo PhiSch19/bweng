@@ -38,8 +38,8 @@ public class MovieController {
 
     @GetMapping
     @Public
-    public List<MovieDto> getMovies() {
-        return movieService.getAll().stream().map(dtoMapper::from).toList();
+    public List<MovieDto> getMovies(@RequestParam(required = false) boolean sortByNewest) {
+        return movieService.getAll(sortByNewest).stream().map(dtoMapper::from).toList();
     }
 
     @GetMapping("/{id}")

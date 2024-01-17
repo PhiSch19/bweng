@@ -23,8 +23,8 @@ public class MovieService {
 
     private final FileStorage fileStorage;
 
-    public List<Movie> getAll() {
-        return this.movieRepository.findAll();
+    public List<Movie> getAll(boolean sortByNewest) {
+        return sortByNewest ? this.movieRepository.getAllSortedByCreationDate() : this.movieRepository.findAll();
     }
 
     public Movie upload(UUID id, MultipartFile toUpload) throws StorageException {
