@@ -1,5 +1,6 @@
 package at.technikum.bweng.dto;
 
+import at.technikum.bweng.validator.CountryConstraint;
 import jakarta.validation.constraints.Email;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ public record UserDetailsDto(String firstname,
                              String lastname,
                              @Email String email,
                              String salutation,
-                             String country,
+                             @CountryConstraint String country,
                              UUID id,
                              UUID profilePictureId,
                              LocalDateTime lastUpdatedOn,

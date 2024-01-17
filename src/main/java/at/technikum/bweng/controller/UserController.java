@@ -62,7 +62,7 @@ public class UserController {
 
     @PatchMapping("/{id}/details")
     @PreAuthorize("hasPermission(#id, 'at.technikum.bweng.entity.User', 'update')")
-    public UserDetailsDto details(@PathVariable UUID id, @RequestBody UserDetailsDto details) {
+    public UserDetailsDto details(@PathVariable UUID id, @RequestBody @Valid UserDetailsDto details) {
         return detailsDtoMapper.from(userService.patch(id, detailsDtoMapper.from(details)));
     }
 
