@@ -1,13 +1,11 @@
 package at.technikum.bweng.controller;
 
-import at.technikum.bweng.dto.MovieDto;
 import at.technikum.bweng.dto.UserCredentialsDto;
 import at.technikum.bweng.dto.UserDto;
 import at.technikum.bweng.entity.User;
 import at.technikum.bweng.repository.UserRepository;
 import at.technikum.bweng.service.AuthService;
 import at.technikum.bweng.service.UserService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +19,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.UUID;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
@@ -58,8 +53,8 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("""
                                         {
-                                          "username": "test",
-                                          "password": "test",
+                                          "username": "test123",
+                                          "password": "Abcd1234",
                                           "details": {
                                             "firstname": "fn",
                                             "lastname": "ln",
@@ -83,10 +78,10 @@ class UserControllerTest {
     }
 
     @Test
-    void registerExistingUser() throws Exception{
+    void registerExistingUser() throws Exception {
 
         User user = new User();
-        user.setUsername("test");
+        user.setUsername("test123");
         user.setPassword("AAAAaaaa123!!!");
         user.setFirstname("fn");
         user.setLastname("ln");
@@ -96,26 +91,23 @@ class UserControllerTest {
 
         userService.register(user);
 
-        Assertions.assertThatExceptionOfType(jakarta.servlet.ServletException.class)
-                .isThrownBy(() -> mvc.perform(
-                                MockMvcRequestBuilders.post("/user/register")
-                                        .contentType(MediaType.APPLICATION_JSON)
-                                        .content("""
-                                        {
-                                          "username": "test",
-                                          "password": "AAAAaaaa123!!!",
-                                          "details": {
-                                            "firstname": "fn",
-                                            "lastname": "ln",
-                                            "email": "xxl@xx.at",
-                                            "country": "AT",
-                                            "salutation": "sal"
-                                          }
-                                        }
-                                        """)
-                        )
-                        .andExpect(MockMvcResultMatchers.status().isOk()));
-
+        mvc.perform(
+                MockMvcRequestBuilders.post("/user/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "username": "test123",
+                                  "password": "AAAAaaaa123!!!",
+                                  "details": {
+                                    "firstname": "fn",
+                                    "lastname": "ln",
+                                    "email": "xxl@xx.at",
+                                    "country": "AT",
+                                    "salutation": "sal"
+                                  }
+                                }
+                                """)
+        ).andExpect(MockMvcResultMatchers.status().is(412));
 
 
     }
@@ -123,8 +115,8 @@ class UserControllerTest {
 
     @Test
     void token() throws Exception {
-        String user = "us";
-        String pw = "pw";
+        String user = "us123";
+        String pw = "Abcd1234";
         userController.register(
                 new UserDto(
                         new UserCredentialsDto(user, pw),
@@ -135,8 +127,8 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                  "username": "us",
-                                  "password": "pw"
+                                  "username": "us123",
+                                  "password": "Abcd1234"
                                 }
                                 """)
                 )
@@ -147,7 +139,7 @@ class UserControllerTest {
     @Test
     void tokenInvalidCreds() throws Exception {
         /*Tests wether invalid credentials lead to a 401 response.*/
-        String user = "us";
+        String user = "us123";
         String pw = "AAAAaaaa123!!!";
         userController.register(
                 new UserDto(
@@ -159,8 +151,8 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                  "username": "us",
-                                  "password": "pw"
+                                  "username": "us123",
+                                  "password": "Abcd1234"
                                 }
                                 """)
                 )
@@ -169,11 +161,11 @@ class UserControllerTest {
 
 
     @Test
-    void testGetDetails() throws Exception{
+    void testGetDetails() throws Exception {
         /*Tests if a user is can access details of another user.*/
         String password = "AAAAaaaa123!!!";
         User user = new User();
-        user.setUsername("us");
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -184,7 +176,7 @@ class UserControllerTest {
         userService.register(user);
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.get("/user/"+ user.getId() +"/details")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.get("/user/" + user.getId() + "/details")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token));
 
@@ -193,11 +185,11 @@ class UserControllerTest {
     }
 
     @Test
-    void testGetDetailsOtherUser() throws Exception{
+    void testGetDetailsOtherUser() throws Exception {
         /*Tests if a user is forbidden to access details of another user.*/
         String password = "AAAAaaaa123!!!";
         User user = new User();
-        user.setUsername("us");
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -206,7 +198,7 @@ class UserControllerTest {
         user.setSalutation("mrs.");
 
         User other = new User();
-        other.setUsername("other");
+        other.setUsername("other123");
         other.setPassword(password);
         other.setLastname("other");
         other.setFirstname("other");
@@ -219,18 +211,19 @@ class UserControllerTest {
 
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.get("/user/"+ other.getId() +"/details")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.get("/user/" + other.getId() + "/details")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token));
 
         response.andExpect(MockMvcResultMatchers.status().isForbidden());
     }
+
     @Test
-    void testGetDetailsNoToken() throws Exception{
+    void testGetDetailsNoToken() throws Exception {
         /*test wether the access of details is prevented for users that don't provide a token*/
         String password = "AAAAaaaa123!!!";
         User user = new User();
-        user.setUsername("us");
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -240,7 +233,7 @@ class UserControllerTest {
 
         userService.register(user);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.get("/user/"+ user.getId() +"/details")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.get("/user/" + user.getId() + "/details")
                 .contentType(MediaType.APPLICATION_JSON));
 
         response.andExpect(MockMvcResultMatchers.status().isUnauthorized());
@@ -248,16 +241,16 @@ class UserControllerTest {
     }
 
     @Test
-    void testPatchDetails() throws Exception{
+    void testPatchDetails() throws Exception {
         /*tests if users can update their details*/
         String password = "AAAAaaaa123!!!";
         String initFirstName = "us";
         String patchFirstName = "patched";
 
         User user = new User();
-        user.setUsername(initFirstName);
+        user.setUsername("us123");
         user.setPassword(password);
-        user.setLastname("ln");
+        user.setLastname(initFirstName);
         user.setFirstname("fn");
         user.setEmail("user@mail.com");
         user.setCountry("AT");
@@ -266,12 +259,12 @@ class UserControllerTest {
         userService.register(user);
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.patch("/user/"+ user.getId() +"/details")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.patch("/user/" + user.getId() + "/details")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token)
                 .content(String.format("""
-                                        {"firstname": "%s"}
-                                        """, patchFirstName))
+                        {"firstname": "%s"}
+                        """, patchFirstName))
         );
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
@@ -279,16 +272,16 @@ class UserControllerTest {
     }
 
     @Test
-    void testPatchDetailsLastName() throws Exception{
+    void testPatchDetailsLastName() throws Exception {
         /*tests if users can update their details*/
         String password = "AAAAaaaa123!!!";
         String initFirstName = "us";
         String patched = "patched";
 
         User user = new User();
-        user.setUsername(initFirstName);
+        user.setUsername("us123");
         user.setPassword(password);
-        user.setLastname("ln");
+        user.setLastname(initFirstName);
         user.setFirstname("fn");
         user.setEmail("user@mail.com");
         user.setCountry("AT");
@@ -297,12 +290,12 @@ class UserControllerTest {
         userService.register(user);
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.patch("/user/"+ user.getId() +"/details")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.patch("/user/" + user.getId() + "/details")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token)
                 .content(String.format("""
-                                        {"lastname": "%s"}
-                                        """, patched))
+                        {"lastname": "%s"}
+                        """, patched))
         );
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
@@ -310,14 +303,13 @@ class UserControllerTest {
     }
 
     @Test
-    void testPatchDetailsEmail() throws Exception{
+    void testPatchDetailsEmail() throws Exception {
         /*tests if users can update their details*/
         String password = "AAAAaaaa123!!!";
-        String initFirstName = "us";
         String patched = "patched@mail.com";
 
         User user = new User();
-        user.setUsername(initFirstName);
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -328,12 +320,12 @@ class UserControllerTest {
         userService.register(user);
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.patch("/user/"+ user.getId() +"/details")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.patch("/user/" + user.getId() + "/details")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token)
                 .content(String.format("""
-                                        {"email": "%s"}
-                                        """, patched))
+                        {"email": "%s"}
+                        """, patched))
         );
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
@@ -341,14 +333,13 @@ class UserControllerTest {
     }
 
     @Test
-    void testPatchDetailsCountry() throws Exception{
+    void testPatchDetailsCountry() throws Exception {
         /*tests if users can update their details*/
         String password = "AAAAaaaa123!!!";
-        String initFirstName = "us";
         String patched = "US";
 
         User user = new User();
-        user.setUsername(initFirstName);
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -359,12 +350,12 @@ class UserControllerTest {
         userService.register(user);
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.patch("/user/"+ user.getId() +"/details")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.patch("/user/" + user.getId() + "/details")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token)
                 .content(String.format("""
-                                        {"country": "%s"}
-                                        """, patched))
+                        {"country": "%s"}
+                        """, patched))
         );
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
@@ -372,14 +363,13 @@ class UserControllerTest {
     }
 
     @Test
-    void testPatchDetailsSalutation() throws Exception{
+    void testPatchDetailsSalutation() throws Exception {
         /*tests if users can update their details*/
         String password = "AAAAaaaa123!!!";
-        String initFirstName = "us";
         String patched = "other";
 
         User user = new User();
-        user.setUsername(initFirstName);
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -390,12 +380,12 @@ class UserControllerTest {
         userService.register(user);
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.patch("/user/"+ user.getId() +"/details")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.patch("/user/" + user.getId() + "/details")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token)
                 .content(String.format("""
-                                        {"salutation": "%s"}
-                                        """, patched))
+                        {"salutation": "%s"}
+                        """, patched))
         );
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
@@ -403,13 +393,12 @@ class UserControllerTest {
     }
 
     @Test
-    void getAllUsersAdmin() throws Exception{
+    void getAllUsersAdmin() throws Exception {
         /*tests if an admin user can fetch a list of all users*/
         String password = "AAAAaaaa123!!!";
-        String initFirstName = "admin";
 
         User user = new User();
-        user.setUsername(initFirstName);
+        user.setUsername("admin123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -423,7 +412,7 @@ class UserControllerTest {
 
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.get("/user")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.get("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token)
 
@@ -435,14 +424,14 @@ class UserControllerTest {
 
 
     }
+
     @Test
-    void getAllUsersNoToken() throws Exception{
+    void getAllUsersNoToken() throws Exception {
         /*tests is all a list of users can be fetched without a valid token*/
         String password = "AAAAaaaa123!!!";
-        String initFirstName = "admin";
 
         User user = new User();
-        user.setUsername(initFirstName);
+        user.setUsername("admin123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -454,7 +443,7 @@ class UserControllerTest {
         user.setRole("ROLE_ADMIN");
         userRepository.save(user);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.get("/user")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.get("/user")
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -462,14 +451,14 @@ class UserControllerTest {
 
 
     }
+
     @Test
-    void getAllUsersWithoutAdminRights() throws Exception{
+    void getAllUsersWithoutAdminRights() throws Exception {
         /*tests if a user without admin rights can fetch a list of all users*/
         String password = "AAAAaaaa123!!!";
-        String initFirstName = "admin";
 
         User user = new User();
-        user.setUsername(initFirstName);
+        user.setUsername("admin123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -482,7 +471,7 @@ class UserControllerTest {
 
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.get("/user")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.get("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token)
 
@@ -491,14 +480,15 @@ class UserControllerTest {
         response.andExpect(MockMvcResultMatchers.status().isForbidden());
 
     }
+
     @Test
-    void changeRole() throws Exception{
+    void changeRole() throws Exception {
         /*Tests if a user is forbidden to access details of another user.*/
         String newRole = "ROLE_STAFF";
 
         String password = "AAAAaaaa123!!!";
         User user = new User();
-        user.setUsername("us");
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -507,7 +497,7 @@ class UserControllerTest {
         user.setSalutation("mrs.");
 
         User other = new User();
-        other.setUsername("other");
+        other.setUsername("other123");
         other.setPassword(password);
         other.setLastname("other");
         other.setFirstname("other");
@@ -523,7 +513,7 @@ class UserControllerTest {
 
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response  = mvc.perform(MockMvcRequestBuilders.post("/user/"+ other.getId() +"/role")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.post("/user/" + other.getId() + "/role")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "bearer " + token)
                 .content(newRole));
@@ -533,7 +523,7 @@ class UserControllerTest {
     }
 
     @Test
-    void uploadProfilePicture() throws Exception{
+    void uploadProfilePicture() throws Exception {
 
         MockMultipartFile file = new MockMultipartFile(
                 "file", "profileImage.png",
@@ -543,7 +533,7 @@ class UserControllerTest {
 
         String password = "AAAAaaaa123!!!";
         User user = new User();
-        user.setUsername("us");
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -554,7 +544,7 @@ class UserControllerTest {
         userService.register(user);
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response = mvc.perform(MockMvcRequestBuilders.multipart("/user/"+ user.getId() +"/profile-picture")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.multipart("/user/" + user.getId() + "/profile-picture")
                 .file(file)
                 .header("Authorization", "bearer " + token));
 
@@ -565,7 +555,7 @@ class UserControllerTest {
     }
 
     @Test
-    void uploadProfilePictureNoToken() throws Exception{
+    void uploadProfilePictureNoToken() throws Exception {
 
         MockMultipartFile file = new MockMultipartFile(
                 "file", "profileImage.png",
@@ -575,7 +565,7 @@ class UserControllerTest {
 
         String password = "AAAAaaaa123!!!";
         User user = new User();
-        user.setUsername("us");
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -585,7 +575,7 @@ class UserControllerTest {
 
         userService.register(user);
 
-        ResultActions response = mvc.perform(MockMvcRequestBuilders.multipart("/user/"+ user.getId() +"/profile-picture")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.multipart("/user/" + user.getId() + "/profile-picture")
                 .file(file));
         response.andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
@@ -594,7 +584,7 @@ class UserControllerTest {
 
 
     @Test
-    void uploadProfilePictureOfOtherUser() throws Exception{
+    void uploadProfilePictureOfOtherUser() throws Exception {
 
         MockMultipartFile file = new MockMultipartFile(
                 "file", "profileImage.png",
@@ -604,7 +594,7 @@ class UserControllerTest {
 
         String password = "AAAAaaaa123!!!";
         User user = new User();
-        user.setUsername("us");
+        user.setUsername("us123");
         user.setPassword(password);
         user.setLastname("ln");
         user.setFirstname("fn");
@@ -622,12 +612,11 @@ class UserControllerTest {
         other.setSalutation("mrs.");
 
 
-
         userService.register(user);
         userService.register(other);
         String token = authService.authenticate(user.getUsername(), password);
 
-        ResultActions response = mvc.perform(MockMvcRequestBuilders.multipart("/user/"+ other.getId() +"/profile-picture")
+        ResultActions response = mvc.perform(MockMvcRequestBuilders.multipart("/user/" + other.getId() + "/profile-picture")
                 .file(file)
                 .header("Authorization", "bearer " + token));
 

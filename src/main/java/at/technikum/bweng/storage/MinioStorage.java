@@ -1,6 +1,7 @@
 package at.technikum.bweng.storage;
 
 import at.technikum.bweng.config.MinioProperties;
+import at.technikum.bweng.exception.StorageException;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
@@ -19,7 +20,7 @@ public class MinioStorage implements FileStorage {
     private final MinioClient minioClient;
 
     @Override
-    public String upload(MultipartFile file) {
+    public String upload(MultipartFile file) throws StorageException {
         String uuid = UUID.randomUUID().toString();
         try {
             minioClient.putObject(
@@ -31,13 +32,13 @@ public class MinioStorage implements FileStorage {
                             .build()
             );
         } catch (Exception e) {
-            throw new RuntimeException(); // TODO: 06.12.23 Exception-Handling
+            throw new StorageException(e.getMessage(), e);
         }
         return uuid;
     }
 
     @Override
-    public InputStream load(String id) {
+    public InputStream load(String id) throws StorageException {
         try {
             return minioClient.getObject(
                     GetObjectArgs.builder()
@@ -46,7 +47,7 @@ public class MinioStorage implements FileStorage {
                             .build()
             );
         } catch (Exception e) {
-            throw new RuntimeException(); // TODO: 06.12.23 Exception-Handling
+            throw new StorageException(e.getMessage(), e);
         }
     }
 }

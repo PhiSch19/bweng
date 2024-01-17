@@ -3,10 +3,11 @@ package at.technikum.bweng.service;
 
 import at.technikum.bweng.entity.File;
 import at.technikum.bweng.entity.User;
+import at.technikum.bweng.exception.StorageException;
+import at.technikum.bweng.exception.UserAlreadyExistsException;
 import at.technikum.bweng.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,10 +51,10 @@ public class UserService {
         return repository.save(user);
     }
 
-    public User register(User user) {
+    public User register(User user) throws UserAlreadyExistsException {
 
         if (repository.findByUsername(user.getUsername()).isPresent()) {
-            throw new RuntimeException("User already exists!"); // TODO: 02.12.23 Exception-Handling
+            throw new UserAlreadyExistsException();
         }
 
         //set defaults and encode pw
@@ -64,7 +65,7 @@ public class UserService {
         return repository.save(user);
     }
 
-    public User uploadProfilePicture(UUID id, MultipartFile profilePicture) throws FileUploadException {
+    public User uploadProfilePicture(UUID id, MultipartFile profilePicture) throws StorageException {
         User user = get(id);
         File file = fileService.upload(profilePicture);
         user.setProfilePicture(file);

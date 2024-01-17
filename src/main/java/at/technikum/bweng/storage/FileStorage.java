@@ -1,15 +1,14 @@
 package at.technikum.bweng.storage;
 
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import at.technikum.bweng.exception.StorageException;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public interface FileStorage {
 
-    String upload(MultipartFile file) throws FileUploadException;
+    String upload(MultipartFile file) throws StorageException;
 
-    InputStream load(String id) throws FileNotFoundException;
+    InputStream load(String id) throws StorageException;
 }
 

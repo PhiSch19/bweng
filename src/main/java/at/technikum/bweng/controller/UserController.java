@@ -8,13 +8,15 @@ import at.technikum.bweng.dto.UserDto;
 import at.technikum.bweng.dto.mapper.UserAdminDtoMapper;
 import at.technikum.bweng.dto.mapper.UserDetailsDtoMapper;
 import at.technikum.bweng.dto.mapper.UserDtoMapper;
+import at.technikum.bweng.exception.StorageException;
+import at.technikum.bweng.exception.UserAlreadyExistsException;
 import at.technikum.bweng.security.roles.Admin;
 import at.technikum.bweng.security.roles.Public;
 import at.technikum.bweng.service.AuthService;
 import at.technikum.bweng.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -42,7 +44,7 @@ public class UserController {
 
     @PostMapping("/register")
     @Public
-    public UserDetailsDto register(@RequestBody @Valid UserDto userDto) {
+    public UserDetailsDto register(@RequestBody @Valid UserDto userDto) throws UserAlreadyExistsException {
         return detailsDtoMapper.from(userService.register(userDtoMapper.from(userDto)));
     }
 
@@ -66,7 +68,7 @@ public class UserController {
 
     @PostMapping("/{id}/profile-picture")
     @PreAuthorize("hasPermission(#id, 'at.technikum.bweng.entity.User', 'update')")
-    public UserDetailsDto uploadProfilePicture(@PathVariable UUID id, @RequestParam("file") MultipartFile profilePicture) throws FileUploadException {
+    public UserDetailsDto uploadProfilePicture(@PathVariable UUID id, @RequestParam("file") MultipartFile profilePicture) throws StorageException {
         return detailsDtoMapper.from(userService.uploadProfilePicture(id, profilePicture));
     }
 
@@ -78,7 +80,8 @@ public class UserController {
 
     @PostMapping("/{id}/role")
     @Admin
-    public UserAdminDto changeRole(@PathVariable UUID id, @RequestBody String role) { //TODO: Validation for role
+    public UserAdminDto changeRole(@PathVariable UUID id,
+                                   @RequestBody @Valid @Pattern(regexp = "ROLE_USER|ROLE_STAFF|ROLE_ADMIN") String role) {
         return userAdminDtoMapper.from(userService.updateRole(id, role));
     }
 

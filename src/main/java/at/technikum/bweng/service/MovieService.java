@@ -1,17 +1,16 @@
 package at.technikum.bweng.service;
 
 import at.technikum.bweng.entity.Movie;
+import at.technikum.bweng.exception.StorageException;
 import at.technikum.bweng.repository.MovieRepository;
 import at.technikum.bweng.storage.FileStorage;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +27,7 @@ public class MovieService {
         return this.movieRepository.findAll();
     }
 
-    public Movie upload(UUID id, MultipartFile toUpload) throws FileUploadException {
+    public Movie upload(UUID id, MultipartFile toUpload) throws StorageException {
         Movie movie = findMovie(id);
         var externalId = fileStorage.upload(toUpload);
 
@@ -72,7 +71,7 @@ public class MovieService {
         movieRepository.deleteById(id);
     }
 
-    public Resource getCover(UUID id) throws FileNotFoundException {
+    public Resource getCover(UUID id) throws StorageException {
         var movie = findMovie(id);
 
         InputStream stream = fileStorage.load(movie.getCoverId());
