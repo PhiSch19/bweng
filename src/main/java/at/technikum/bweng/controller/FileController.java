@@ -1,6 +1,7 @@
 package at.technikum.bweng.controller;
 
 import at.technikum.bweng.exception.StorageException;
+import at.technikum.bweng.security.roles.Public;
 import at.technikum.bweng.security.roles.User;
 import at.technikum.bweng.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class FileController {
     private final FileService fileService;
 
     @GetMapping("/{id}/download")
-    @User
+    @Public
     public ResponseEntity<Resource> download(@PathVariable UUID id) throws StorageException {
         return ResponseEntity.ok()
                 .contentType(fileService.getMediaType(id))
