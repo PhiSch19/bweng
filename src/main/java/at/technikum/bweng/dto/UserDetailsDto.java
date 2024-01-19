@@ -8,6 +8,8 @@ import java.util.UUID;
 
 public record UserDetailsDto(String firstname,
                              String lastname,
+                             String username,
+                             String role,
                              @Email String email,
                              String salutation,
                              @CountryConstraint String country,
