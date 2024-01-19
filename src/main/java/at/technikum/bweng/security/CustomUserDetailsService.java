@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -20,7 +22,13 @@ public class CustomUserDetailsService implements UserDetailsService {
             var user = userService.findByUsername(username);
             return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
         } catch (EntityNotFoundException exception) {
-            throw new UsernameNotFoundException(username);
+            try{
+                var user = userService.findByEmail(username);
+                return new UserPrincipal(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
+            }catch (EntityNotFoundException exception2)
+            {
+                throw new UsernameNotFoundException(username);
+            }
         }
     }
 }

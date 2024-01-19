@@ -27,6 +27,10 @@ public class UserService {
         return repository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
     }
 
+    public User findByEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+    }
+
     public User get(UUID id) {
         return repository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
