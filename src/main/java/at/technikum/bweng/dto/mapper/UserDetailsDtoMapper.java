@@ -11,7 +11,9 @@ public interface UserDetailsDtoMapper {
 
     @Mapping(source = "profilePictureId", target = "profilePicture.id")
     User from(UserDetailsDto dto);
-
+    // added mapping so the detail dto delivers username and role
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "role", target="role")
     @InheritInverseConfiguration
     UserDetailsDto from(User user);
 
