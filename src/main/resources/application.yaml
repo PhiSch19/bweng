@@ -15,7 +15,7 @@ spring:
 security:
   cors:
     allowed-origins: http://localhost:8080/
-    allowed-methods: GET, POST, PUT, OPTIONS, HEAD
+    allowed-methods: GET, POST, PUT, PATCH, OPTIONS, HEAD
   jwt:
     secret: Q9cXU3bgJFQC6xyPt2uh7UOreLhMAk
     issuer: bweng
