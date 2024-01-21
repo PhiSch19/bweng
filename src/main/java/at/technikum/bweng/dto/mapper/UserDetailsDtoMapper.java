@@ -14,6 +14,7 @@ public interface UserDetailsDtoMapper {
     // added mapping so the detail dto delivers username and role
     @Mapping(source = "username", target = "username")
     @Mapping(source = "role", target="role")
+    @Mapping(source = "active", target="active")
     @InheritInverseConfiguration
     UserDetailsDto from(User user);
 

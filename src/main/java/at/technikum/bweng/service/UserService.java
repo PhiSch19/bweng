@@ -63,6 +63,7 @@ public class UserService {
 
         //set defaults and encode pw
         user.setRole("ROLE_USER");
+        user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setProfilePicture(null);
 
@@ -86,4 +87,15 @@ public class UserService {
         return repository.save(user);
     }
 
+    public User toggleUserState(UUID id) {
+        User user = get(id);
+        // toggle state
+        user.setActive(!user.getActive());
+        return repository.save(user);
+    }
+
+    public void deleteUser(UUID id) {
+        User user = get(id);
+        repository.delete(user);
+    }
 }

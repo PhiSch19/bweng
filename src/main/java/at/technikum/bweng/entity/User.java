@@ -44,6 +44,7 @@ public class User {
     private String email;
     private String salutation;
     private String country;
+    private Boolean active = true;
 
     @ManyToOne
     @JoinColumn(name = "profile_picture_id")

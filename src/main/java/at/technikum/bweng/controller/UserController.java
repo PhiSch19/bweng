@@ -12,20 +12,14 @@ import at.technikum.bweng.exception.StorageException;
 import at.technikum.bweng.exception.UserAlreadyExistsException;
 import at.technikum.bweng.security.roles.Admin;
 import at.technikum.bweng.security.roles.Public;
+import at.technikum.bweng.security.roles.User;
 import at.technikum.bweng.service.AuthService;
 import at.technikum.bweng.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -66,6 +60,13 @@ public class UserController {
         return detailsDtoMapper.from(userService.patch(id, detailsDtoMapper.from(details)));
     }
 
+    @DeleteMapping("/{id}")
+    @User
+    public void deleteUser(@PathVariable UUID id){
+        userService.deleteUser(id);
+
+    }
+
     @PostMapping("/{id}/profile-picture")
     @PreAuthorize("hasPermission(#id, 'at.technikum.bweng.entity.User', 'update')")
     public UserDetailsDto uploadProfilePicture(@PathVariable UUID id, @RequestParam("file") MultipartFile profilePicture) throws StorageException {
@@ -83,6 +84,12 @@ public class UserController {
     public UserAdminDto changeRole(@PathVariable UUID id,
                                    @RequestBody @Valid @Pattern(regexp = "ROLE_USER|ROLE_STAFF|ROLE_ADMIN") String role) {
         return userAdminDtoMapper.from(userService.updateRole(id, role));
+    }
+
+    @PostMapping("/{id}/activeState")
+    @Admin
+    public UserAdminDto changeActiveState(@PathVariable UUID id) {
+        return userAdminDtoMapper.from(userService.toggleUserState(id));
     }
 
 }

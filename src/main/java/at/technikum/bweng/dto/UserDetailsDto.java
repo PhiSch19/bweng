@@ -15,6 +15,10 @@ public record UserDetailsDto(String firstname,
                              @CountryConstraint String country,
                              UUID id,
                              UUID profilePictureId,
+                             boolean active,
                              LocalDateTime lastUpdatedOn,
-                             LocalDateTime createdOn) {
+                             LocalDateTime createdOn
+
+
+                             ) {
 }

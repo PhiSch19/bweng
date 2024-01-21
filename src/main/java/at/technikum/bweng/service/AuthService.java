@@ -17,7 +17,11 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public String authenticate(String username, String password) {
+
+        UsernamePasswordAuthenticationToken userNamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         return tokenIssuer.issue(principal.getId(), principal.getUsername(), principal.getRole());
