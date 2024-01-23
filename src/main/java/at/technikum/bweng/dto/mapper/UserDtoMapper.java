@@ -11,6 +11,7 @@ public interface UserDtoMapper {
 
     @Mapping(source = "credentials", target = ".")
     @Mapping(source = "details", target = ".")
+    @Mapping(source = "credentials.username", target = "username")
     User from(UserDto dto);
 
     @InheritInverseConfiguration
