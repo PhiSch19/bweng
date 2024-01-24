@@ -52,6 +52,15 @@ public class UserService {
         if (patchedData.getCountry() != null) {
             user.setCountry(patchedData.getCountry());
         }
+        if (patchedData.getUsername() != null) {
+            user.setUsername(patchedData.getUsername());
+        }
+        return repository.save(user);
+    }
+
+    public User password(UUID id, String password) {
+        User user = get(id);
+        user.setPassword(passwordEncoder.encode(password));
         return repository.save(user);
     }
 
